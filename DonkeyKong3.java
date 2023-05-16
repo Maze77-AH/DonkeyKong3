@@ -9,8 +9,18 @@ import java.io.IOException;
 public class DonkeyKong3 extends JFrame implements KeyListener, ActionListener {
     
     public void keyPressed(KeyEvent event) {
-        if () {
 
-        }
+    }
+
+    public void keyTyped(KeyEvent event) {
+
+    }
+
+    public void keyReleased(KeyEvent event) {
+
+    }
+    
+    public void actionPerformed(ActionEvent e) {
+
     }
 }
