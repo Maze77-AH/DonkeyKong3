@@ -8,20 +8,21 @@ import java.io.IOException;
 
 public class DonkeyKong3 extends JFrame implements KeyListener, ActionListener {
 
-    private int highScores;
     private JFrame myFrame;
+    private int highScores;
     private int currentScore = 0;
+    private int lives;
     private int windowWidth = 1000;
-    private int windowHeight = 1000;
+    private int windowHeight = 865;
 
     public DonkeyKong3() {
-        this(0);
+        this(0, 0, 3);
     }
 
-    public DonkeyKong3(int score) {
+    public DonkeyKong3(int score, int level, int lives) {
         this.currentScore = score;
         myFrame = new JFrame("Donkey Kong 3");
-        myFrame.add(this);
+        //myFrame.add(this);
         addKeyListener(this);
         myFrame.setSize(windowWidth, windowHeight);
         myFrame.setAlwaysOnTop(false);
@@ -29,7 +30,9 @@ public class DonkeyKong3 extends JFrame implements KeyListener, ActionListener {
         myFrame.setResizable(false);
         myFrame.setLocationRelativeTo(null);
         myFrame.setVisible(true);
+        this.lives = lives;
         myFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setLevel(level);
         try {
             setHighScore();
         } catch (IOException e) {
@@ -62,10 +65,14 @@ public class DonkeyKong3 extends JFrame implements KeyListener, ActionListener {
         return currentScore;
     }
 
-    public void setLevel(int rot) {
-        if (rot == 0) {
-            //myFrame.add(new JLabel(new ImageIcon("dk3_level_0.png")));
+    public void setLevel(int level) {
+        if (level == 0) {
+            myFrame.add(new JLabel(new ImageIcon("dk3_level_0.png")));
         }
+    }
+
+    public void death() {
+        lives--;
     }
     
     public void keyPressed(KeyEvent event) {
@@ -80,7 +87,7 @@ public class DonkeyKong3 extends JFrame implements KeyListener, ActionListener {
 
     }
 
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent event) {
 
     }
 }
