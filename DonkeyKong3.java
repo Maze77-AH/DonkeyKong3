@@ -22,7 +22,7 @@ public class DonkeyKong3 extends JFrame implements KeyListener, ActionListener {
     public DonkeyKong3(int score, int level, int lives) {
         this.currentScore = score;
         myFrame = new JFrame("Donkey Kong 3");
-        //myFrame.add(this);
+        setLevel(level);
         addKeyListener(this);
         myFrame.setSize(windowWidth, windowHeight);
         myFrame.setAlwaysOnTop(false);
@@ -32,7 +32,6 @@ public class DonkeyKong3 extends JFrame implements KeyListener, ActionListener {
         myFrame.setVisible(true);
         this.lives = lives;
         myFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setLevel(level);
         try {
             setHighScore();
         } catch (IOException e) {
