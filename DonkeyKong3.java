@@ -61,6 +61,12 @@ public class DonkeyKong3 extends JFrame implements KeyListener, ActionListener {
             this.highScores = currentScore;
         return currentScore;
     }
+
+    public void setLevel(int rot) {
+        if (rot == 0) {
+            //myFrame.add(new JLabel(new ImageIcon("dk3_level_0.png")));
+        }
+    }
     
     public void keyPressed(KeyEvent event) {
 
