@@ -7,6 +7,9 @@ import java.io.*;
 import java.io.IOException;
 
 public class DonkeyKong3 extends JFrame implements KeyListener, ActionListener {
+
+    private int highScore;
+    private int currentScore = 0;
     
     public void keyPressed(KeyEvent event) {
 
@@ -19,7 +22,7 @@ public class DonkeyKong3 extends JFrame implements KeyListener, ActionListener {
     public void keyReleased(KeyEvent event) {
 
     }
-    
+
     public void actionPerformed(ActionEvent e) {
 
     }
