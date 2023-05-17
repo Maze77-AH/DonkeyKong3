@@ -21,7 +21,7 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
     private int bonusTime = 500;
 
     int playerX = 500;
-    int playerY = 100;
+    int playerY = 700;
     int perPixel = 4;
 
     private Mario mario = new Mario();
@@ -146,7 +146,7 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
 
         g2.drawImage(tool.getImage("dk3_level_" + level + ".png"), 0, 0, 1000, 850, this);
 
-        g2.drawImage(tool.getImage("bm/" + currentAnim + ".png"), playerX, playerY, 60, 100, this);
+        g2.drawImage(tool.getImage("bm/" + currentAnim + ".png"), playerX, playerY, 55, 65, this);
 
         // Score Display
         g2.setColor(Color.orange);
@@ -171,40 +171,40 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
     // Movement Booleans
 
     public void keyPressed(KeyEvent event) {
-        if (event.getKeyCode() == KeyEvent.VK_LEFT) {
+        if (event.getKeyCode() == KeyEvent.VK_A) {
             left = true;
-            if (currentAnim < 4)
+            if (currentAnim < 3)
                 currentAnim++;
             else
                 currentAnim = 0;
-        } else if (event.getKeyCode() == KeyEvent.VK_UP)
+        } else if (event.getKeyCode() == KeyEvent.VK_W)
             up = true;
-        else if (event.getKeyCode() == KeyEvent.VK_RIGHT) {
+        else if (event.getKeyCode() == KeyEvent.VK_D) {
             right = true;
-            if (currentAnim < 4)
+            if (currentAnim < 3)
                 currentAnim++;
             else
                 currentAnim = 0;
-        } else if (event.getKeyCode() == KeyEvent.VK_DOWN)
+        } else if (event.getKeyCode() == KeyEvent.VK_S)
             down = true;
     }
 
     public void keyReleased(KeyEvent event) {
-        if (event.getKeyCode() == KeyEvent.VK_LEFT) {
+        if (event.getKeyCode() == KeyEvent.VK_A) {
             left = false;
-            if (currentAnim < 4)
+            if (currentAnim < 3)
                 currentAnim++;
             else
                 currentAnim = 0;
-        } else if (event.getKeyCode() == KeyEvent.VK_UP)
+        } else if (event.getKeyCode() == KeyEvent.VK_W)
             up = false;
-        else if (event.getKeyCode() == KeyEvent.VK_RIGHT) {
+        else if (event.getKeyCode() == KeyEvent.VK_D) {
             right = false;
-            if (currentAnim < 4)
+            if (currentAnim < 3)
                 currentAnim++;
             else
                 currentAnim = 0;
-        } else if (event.getKeyCode() == KeyEvent.VK_DOWN)
+        } else if (event.getKeyCode() == KeyEvent.VK_S)
             down = false;
     }
 
