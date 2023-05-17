@@ -5,7 +5,7 @@ import java.util.*;
 import java.io.*;
 import java.io.IOException;
 
-public class DonkeyKong3 extends JFrame implements KeyListener, ActionListener {
+public class DonkeyKong3 extends JFrame implements ActionListener, KeyListener {
 
     private JFrame myFrame;
     private int highScores;
@@ -107,14 +107,8 @@ public class DonkeyKong3 extends JFrame implements KeyListener, ActionListener {
     }
 
     public void setLevel(int level) {
-        if (level == 0) {
-            myFrame.add(new JLabel(new ImageIcon("dk3_level_0.png")));
-        }
-        else if (level == 1) {
-            myFrame.add(new JLabel(new ImageIcon("dk3_level_1.png")));
-        }
-        else if (level == 2) {
-            myFrame.add(new JLabel(new ImageIcon("dk3_level_2.png")));
+        if (level == 0 || level == 1 || level == 2) {
+            myFrame.add(new JLabel(new ImageIcon("dk3_level_" + level + ".png")));
         }
         else {
             new DonkeyKong3(currentScore, 0, lives);
