@@ -18,7 +18,7 @@ public class Player extends Mario {
     public void defPos() {
         posX = 100;
         posY = 100;
-        speed = 4;
+        perPixel = 4;
     }
 
     public void movement() {
