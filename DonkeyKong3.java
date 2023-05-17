@@ -190,21 +190,13 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
     }
 
     public void keyReleased(KeyEvent event) {
-        if (event.getKeyCode() == KeyEvent.VK_A) {
+        if (event.getKeyCode() == KeyEvent.VK_A)
             left = false;
-            if (currentAnim < 3)
-                currentAnim++;
-            else
-                currentAnim = 0;
-        } else if (event.getKeyCode() == KeyEvent.VK_W)
+        else if (event.getKeyCode() == KeyEvent.VK_W)
             up = false;
-        else if (event.getKeyCode() == KeyEvent.VK_D) {
+        else if (event.getKeyCode() == KeyEvent.VK_D)
             right = false;
-            if (currentAnim < 3)
-                currentAnim++;
-            else
-                currentAnim = 0;
-        } else if (event.getKeyCode() == KeyEvent.VK_S)
+        else if (event.getKeyCode() == KeyEvent.VK_S)
             down = false;
     }
 
