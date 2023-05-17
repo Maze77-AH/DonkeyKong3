@@ -14,6 +14,13 @@ public class DonkeyKong3 extends JFrame implements KeyListener, ActionListener {
     private int lives;
     private int windowWidth = 1000;
     private int windowHeight = 865;
+    private boolean up, down, left, right;
+
+    int playerX = 0;
+    int playerY = 75;
+    int playerSpeed = 4;
+
+    private Player p = new Player(this, null);
 
     public DonkeyKong3() {
         this(0, 0, 3);
@@ -31,12 +38,19 @@ public class DonkeyKong3 extends JFrame implements KeyListener, ActionListener {
         myFrame.setLocationRelativeTo(null);
         myFrame.setVisible(true);
         this.lives = lives;
+        loop();
         myFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         try {
             setHighScore();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void loop() {
+        while(myFrame != null)
+            update();
+            repaint();
     }
 
     public void setHighScore() throws IOException {
@@ -70,19 +84,44 @@ public class DonkeyKong3 extends JFrame implements KeyListener, ActionListener {
         }
     }
 
+    public void update() {
+
+    }
+
+    public void paintComponent(Graphics g) {
+        Graphics2D g2 = (Graphics2D)g;
+        g2.setColor(Color.white);
+        g2.fillRect(playerX, playerY, 100, 100);
+        g2.dispose();
+    }
+
     public void death() {
         lives--;
     }
     
     public void keyPressed(KeyEvent event) {
-
-    }
-
-    public void keyTyped(KeyEvent event) {
-
+        if(event.getKeyCode() == KeyEvent.VK_LEFT)
+            left = true;
+        else if(event.getKeyCode() == KeyEvent.VK_UP)
+            up = true;
+        else if(event.getKeyCode() == KeyEvent.VK_RIGHT)
+            right = true;
+        else if(event.getKeyCode() == KeyEvent.VK_DOWN)
+            down = true;
     }
 
     public void keyReleased(KeyEvent event) {
+        if(event.getKeyCode() == KeyEvent.VK_LEFT)
+            left = false;
+        else if(event.getKeyCode() == KeyEvent.VK_UP)
+            up = false;
+        else if(event.getKeyCode() == KeyEvent.VK_RIGHT)
+            right = false;
+        else if(event.getKeyCode() == KeyEvent.VK_DOWN)
+            down = false;
+    }
+
+    public void keyTyped(KeyEvent event) {
 
     }
 
