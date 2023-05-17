@@ -18,9 +18,9 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
     private int fps = 60;
     private int currentAnim = 0;
     private int aiLevel;
-    private int bonusTime = 500;
+    private int bonusTime = 700;
 
-    int playerX = 500;
+    int playerX = 700;
     int playerY = 700;
     int perPixel = 4;
 
@@ -42,10 +42,10 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
         myFrame.setResizable(false);
         myFrame.setLocationRelativeTo(null);
         myFrame.setFocusable(true);
-        requestFocusInWindow();
-        addKeyListener(this);
         myFrame.add(this);
         myFrame.setVisible(true);
+        requestFocusInWindow();
+        addKeyListener(this);
         setLevel(level);
         setFPSandPaint();
         myFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
