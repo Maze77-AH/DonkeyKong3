@@ -11,13 +11,14 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
     private int highScores;
     private int currentScore = 0;
     private int lives;
+    private int level;
     private int windowWidth = 1000;
     private int windowHeight = 865;
     private boolean up, down, left, right;
     private int fps = 60;
     private int currentAnim = 0;
     private int aiLevel;
-    private int bonusTime = 1000;
+    private int bonusTime = 500;
 
     int playerX = 500;
     int playerY = 100;
@@ -33,19 +34,21 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
         this.currentScore = score;
         this.lives = lives;
         this.aiLevel = aiLevel;
+        this.level = level;
         myFrame = new JFrame("Donkey Kong 3");
-        setLevel(level);
         myFrame.setSize(windowWidth, windowHeight);
         myFrame.setAlwaysOnTop(false);
         myFrame.setUndecorated(false);
         myFrame.setResizable(false);
         myFrame.setLocationRelativeTo(null);
-        myFrame.setVisible(true);
         myFrame.setFocusable(true);
         requestFocusInWindow();
         addKeyListener(this);
-        myFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        myFrame.add(this);
+        myFrame.setVisible(true);
+        setLevel(level);
         setFPSandPaint();
+        myFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         try {
             setHighScore();
         } catch (IOException e) {
@@ -82,7 +85,7 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
                 if (bonusTime <= 0)
                     death();
                 else {
-                    bonusTime -= 100;
+                    bonusTime -= 10;
                     drawCount = 0;
                     timer = 0;
                 }
@@ -116,9 +119,7 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
     }
 
     public void setLevel(int level) {
-        if (level == 0 || level == 1 || level == 2) {
-            myFrame.add(new JLabel(new ImageIcon("dk3_level_" + level + ".png")));
-        } else {
+        if (level >= 3 ) {
             new DonkeyKong3(currentScore, 0, lives, aiLevel);
             myFrame.dispatchEvent(new WindowEvent(myFrame, WindowEvent.WINDOW_CLOSING));
         }
@@ -136,17 +137,23 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
     }
 
     public void paintComponent(Graphics g) {
-        System.out.println("MOVING");
         super.paintComponent(g);
 
         Graphics2D g2 = (Graphics2D) g;
         Toolkit tool = Toolkit.getDefaultToolkit();
 
+        // Draw Level
+
+        g2.drawImage(tool.getImage("dk3_level_" + level + ".png"), 0, 0, 1000, 850, this);
+
         g2.drawImage(tool.getImage("bm/" + currentAnim + ".png"), playerX, playerY, 60, 100, this);
 
         // Score Display
-        g2.drawString(Integer.toString(currentScore), 50, 10);
-        g2.drawString(Integer.toString(bonusTime), 500, 500);
+        g2.setColor(Color.orange);
+        g2.setFont(new Font("TimesRoman", Font.PLAIN, 24)); 
+        g2.drawString(Integer.toString(currentScore), 165, 79);
+        g2.drawString(Integer.toString(bonusTime), 845, 140);
+        g2.drawString(Integer.toString(highScores), 470, 85);
 
         // Movement of Mario
         mario.move(perPixel, up, down, left, right);
