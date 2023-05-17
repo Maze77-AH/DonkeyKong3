@@ -1,8 +1,7 @@
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.Random;
+import java.util.*;
 import java.io.*;
 import java.io.IOException;
 
@@ -16,10 +15,11 @@ public class DonkeyKong3 extends JFrame implements KeyListener, ActionListener {
     private int windowHeight = 865;
     private boolean up, down, left, right;
     private int fps = 60;
+    private int currentAnim = 0;
 
     int playerX = 0;
     int playerY = 75;
-    int playerSpeed = 4;
+    int perPixel = 4;
 
     private Player p = new Player(this, null);
 
@@ -38,6 +38,8 @@ public class DonkeyKong3 extends JFrame implements KeyListener, ActionListener {
         myFrame.setResizable(false);
         myFrame.setLocationRelativeTo(null);
         myFrame.setVisible(true);
+        myFrame.setFocusable(true);
+        requestFocusInWindow();
         this.lives = lives;
         myFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setFPSandPaint();
@@ -123,20 +125,28 @@ public class DonkeyKong3 extends JFrame implements KeyListener, ActionListener {
 
     public void update() {
         if(up)
-            playerY -= playerSpeed;
+            playerY -= perPixel;
         else if(left)
-            playerX -= playerSpeed;
+            playerX -= perPixel;
         else if(right)
-            playerX += playerSpeed;
+            playerX += perPixel;
         else if(down)
-            playerY += playerSpeed;
+            playerY += perPixel;
     }
 
     public void paintComponent(Graphics g) {
-        super.paintComponents(g);
+        super.paintComponent(g);
         System.out.println("MOVING");
-        Graphics2D g2 = (Graphics2D)g;
+        Graphics2D g2 = (Graphics2D) g;
+        Toolkit tool = Toolkit.getDefaultToolkit();
+
         g2.setColor(Color.red);
+
+        g2.drawImage(tool.getImage("bm/" + currentAnim + ".png"), playerX, playerY, 60, 60, this);
+
+        // Score Display
+        g2.drawString(Integer.toString(currentScore), 10, 10);
+
         g2.fillRect(playerX, playerY, 800, 800);
         g2.dispose();
     }
@@ -146,12 +156,22 @@ public class DonkeyKong3 extends JFrame implements KeyListener, ActionListener {
     }
     
     public void keyPressed(KeyEvent event) {
-        if(event.getKeyCode() == KeyEvent.VK_LEFT)
+        if(event.getKeyCode() == KeyEvent.VK_LEFT) {
             left = true;
+            if (currentAnim < 4)
+                currentAnim++;
+            else
+                currentAnim = 0;
+        }
         else if(event.getKeyCode() == KeyEvent.VK_UP)
             up = true;
-        else if(event.getKeyCode() == KeyEvent.VK_RIGHT)
+        else if(event.getKeyCode() == KeyEvent.VK_RIGHT) {
             right = true;
+            if (currentAnim < 4)
+                currentAnim++;
+            else
+                currentAnim = 0;
+        }
         else if(event.getKeyCode() == KeyEvent.VK_DOWN)
             down = true;
     }
@@ -159,10 +179,20 @@ public class DonkeyKong3 extends JFrame implements KeyListener, ActionListener {
     public void keyReleased(KeyEvent event) {
         if(event.getKeyCode() == KeyEvent.VK_LEFT)
             left = false;
-        else if(event.getKeyCode() == KeyEvent.VK_UP)
+        else if(event.getKeyCode() == KeyEvent.VK_UP) {
             up = false;
-        else if(event.getKeyCode() == KeyEvent.VK_RIGHT)
+            if (currentAnim < 4)
+                currentAnim++;
+            else
+                currentAnim = 0;
+        }
+        else if(event.getKeyCode() == KeyEvent.VK_RIGHT) {
             right = false;
+            if (currentAnim < 4)
+                currentAnim++;
+            else
+                currentAnim = 0;
+        }
         else if(event.getKeyCode() == KeyEvent.VK_DOWN)
             down = false;
     }
