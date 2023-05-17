@@ -155,12 +155,12 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
         g2.drawString(Integer.toString(bonusTime), 845, 140);
         g2.drawString(Integer.toString(highScores), 470, 85);
 
-        // Movement of Mario
-        mario.move(perPixel, up, down, left, right);
-        mario.pos();
+        // // Movement of Mario
+        // mario.move(perPixel, up, down, left, right);
+        // mario.pos();
 
         // g2.fillRect(playerX, playerY, 800, 800);
-        // g2.dispose();
+        g2.dispose();
     }
 
     public void death() {
