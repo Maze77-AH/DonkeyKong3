@@ -25,6 +25,7 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
     int perPixel = 4;
 
     private Mario mario = new Mario();
+    private DK dk = new DK();
 
     public DonkeyKong3() {
         this(0, 0, 3, 0);
@@ -146,7 +147,13 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
 
         g2.drawImage(tool.getImage("dk3_level_" + level + ".png"), 0, 0, 1000, 850, this);
 
+        // Draw Mario
+
         g2.drawImage(tool.getImage("bm/" + currentAnim + ".png"), playerX, playerY, 55, 65, this);
+
+        // Draw Donkey Kong
+
+        g2.drawImage(tool.getImage("sprites/dk/1.png"), dk.getPosX(), dk.getPosY(), 55, 65, this);
 
         // Score Display
         g2.setColor(Color.orange);
