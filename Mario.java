@@ -3,13 +3,34 @@ public class Mario {
     public int playerY = 700;
     public int perPixel = 4;
     public int totalPlayerY = 0;
+    private int currentAnim = 0;
+    private boolean death = false;
 
-    public void death() {
-        
+    public void move() {
+      if (currentAnim < 3)
+          currentAnim++;
+      else
+          currentAnim = 0;
     }
 
-    public void updatePosX() {
-      
+    public int getAnimMario() {
+      return currentAnim++;
+    }
+
+    public void setDeath() {
+      death = true;
+    }
+
+    public boolean getDeath() {
+        return death;
+    }
+
+    public void updatePosX(int posX) {
+      playerX = posX;
+    }
+
+    public void updatePosY(int posY) {
+      playerY = posY;
     }
 
     public int getPosX() {
