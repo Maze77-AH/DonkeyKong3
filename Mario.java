@@ -14,7 +14,7 @@ public class Mario {
     }
 
     public int getAnimMario() {
-      return currentAnim++;
+      return currentAnim;
     }
 
     public void setDeath() {

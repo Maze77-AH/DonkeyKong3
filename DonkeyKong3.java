@@ -75,8 +75,6 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
             lastTime = currentTime;
 
             if (delta >= 1) {
-                mario.updatePosX(playerX);
-                mario.updatePosY(playerY);
                 update();
                 repaint();
                 delta--;
@@ -166,9 +164,8 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
         g2.drawString(Integer.toString(highScores), 450, 30);
         g2.drawString(Integer.toString(bonusTime),  760, 100);
 
-        // // Movement of Mario
-        // mario.move(perPixel, up, down, left, right);
-        // mario.pos();
+        mario.updatePosX(playerX);
+        mario.updatePosY(playerY);
 
         // g2.fillRect(playerX, playerY, 800, 800);
         g2.dispose();
