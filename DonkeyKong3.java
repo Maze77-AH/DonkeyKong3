@@ -12,23 +12,23 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
     private int currentScore = 0;
     private int lives;
     private int level;
-    private int windowWidth = 1000;
-    private int windowHeight = 865;
+    private int windowWidth = 899;
+    private int windowHeight = 1020;
     private boolean up, down, left, right;
     private int fps = 60;
     private int currentAnim = 0;
     private int aiLevel;
-    private int bonusTime = 700;
+    private int bonusTime = 8000;
+
+    private Mario mario = new Mario();
+    private DK dk = new DK(aiLevel);
 
     int playerX = 700;
     int playerY = 700;
     int perPixel = 4;
 
-    private Mario mario = new Mario();
-    private DK dk = new DK();
-
     public DonkeyKong3() {
-        this(0, 0, 3, 0);
+        this(0, 0, 3, 1);
     }
 
     public DonkeyKong3(int score, int level, int lives, int aiLevel) {
@@ -86,7 +86,8 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
                 if (bonusTime <= 0)
                     death();
                 else {
-                    bonusTime -= 10;
+                    dk.move();
+                    bonusTime -= 100;
                     drawCount = 0;
                     timer = 0;
                 }
@@ -145,7 +146,7 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
 
         // Draw Level
 
-        g2.drawImage(tool.getImage("dk3_level_" + level + ".png"), 0, 0, 1000, 850, this);
+        g2.drawImage(tool.getImage("dk3_level_" + level + ".png"), 0, 0, 899, 982, this);
 
         // Draw Mario
 
@@ -153,14 +154,14 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
 
         // Draw Donkey Kong
 
-        g2.drawImage(tool.getImage("sprites/dk/1.png"), dk.getPosX(), dk.getPosY(), 55, 65, this);
+        g2.drawImage(tool.getImage("sprites/dk/" + dk.getAnim() + ".png"), dk.getPosX(), dk.getPosY(), dk.getSizeX(), dk.getSizeY(), this);
 
         // Score Display
         g2.setColor(Color.orange);
-        g2.setFont(new Font("TimesRoman", Font.PLAIN, 24)); 
-        g2.drawString(Integer.toString(currentScore), 165, 79);
-        g2.drawString(Integer.toString(bonusTime), 845, 140);
-        g2.drawString(Integer.toString(highScores), 470, 85);
+        g2.setFont(new Font("Monospace", Font.PLAIN, 40)); 
+        g2.drawString(Integer.toString(currentScore), 125, 30);
+        g2.drawString(Integer.toString(highScores), 450, 30);
+        g2.drawString(Integer.toString(bonusTime),  760, 100);
 
         // // Movement of Mario
         // mario.move(perPixel, up, down, left, right);
@@ -173,6 +174,10 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
     public void death() {
         lives--;
         mario.death();
+    }
+
+    public int getLevel() {
+        return level;
     }
 
     // Movement Booleans
