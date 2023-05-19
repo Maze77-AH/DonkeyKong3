@@ -33,7 +33,6 @@ public class BugSpray extends Mario {
     public void animSet(int dkPosX, int dkPosY) {
         if (currentAnim < 7) {
             currentAnim++;
-            movement();
         }
         else {
             currentAnim = 8;
@@ -44,7 +43,10 @@ public class BugSpray extends Mario {
     
     public void movement() {
         if (spraying) {
-            this.posY -= 50;
+            if(extreme)
+                this.posY -= 35;
+            else 
+                this.posY -= 30;
         }
     }
 

@@ -68,10 +68,15 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
         int timer = 0;
         int drawCount = 0;
 
-        double drawInterval2 = 1000000000 / 120;
+        double drawInterval2 = 1000000000 / fps;
         double delta2 = 0;
         long lastTime2 = System.nanoTime();
         int timer2 = 0;
+
+        double drawInterval3 = 1000000000 / fps;
+        double delta3 = 0;
+        long lastTime3 = System.nanoTime();
+        int timer3 = 0;
 
         while (myFrame != null) {
             currentTime = System.nanoTime();
@@ -82,6 +87,10 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
             delta2 += (currentTime - lastTime2) / drawInterval2;
             timer2 += (currentTime - lastTime2);
             lastTime2 = currentTime;
+
+            delta3 += (currentTime - lastTime3) / drawInterval3;
+            timer3 += (currentTime - lastTime3);
+            lastTime3 = currentTime;
 
             if (delta >= 1) {
                 update();
@@ -109,6 +118,16 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
                     bs.animSet(dk.getPosX(), dk.getPosY());
                 }
                 timer2 = 0;
+            }
+
+            if (delta3 >= 1) {
+                delta3--;
+            }
+            if (timer3 >= 40000000) {
+                if(bs.getSpraying()) {
+                    bs.movement();
+                }
+                timer3 = 0;
             }
         }
     }
@@ -187,7 +206,9 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
 
         // Draw Bug Spray
 
-        if (bs.getPosY() >= dk.getPosY() && bs.getPosY() <= dk.getPosY() + 50 && bs.getPosX() >= dk.getPosX() && bs.getPosX() <= dk.getPosX()) {
+        //if (bs.getPosY() >= dk.getPosY() && bs.getPosY() <= dk.getPosY() + 50 && bs.getPosX() >= dk.getPosX() && bs.getPosX() <= dk.getPosX()) {
+
+        if (bs.getPosY() >= dk.getPosY() && bs.getPosY() <= dk.getPosY() + 50 && bs.getPosX() >= dk.getPosX() && bs.getPosX() <= dk.getPosX() + 150) {
             System.out.println("HITHITHIHTIT");
             bs.forceSprayOff();
             dk.hit();
