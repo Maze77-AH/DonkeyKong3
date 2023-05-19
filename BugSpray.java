@@ -8,6 +8,7 @@ import java.io.IOException;
 
 public class BugSpray extends Mario {
     private boolean extreme;
+    private boolean registerHit = false;
     private boolean spraying = false;
     private int posX;
     private int posY;
@@ -29,7 +30,7 @@ public class BugSpray extends Mario {
         }
     }
 
-    public void animSet() {
+    public void animSet(int dkPosX, int dkPosY) {
         if (currentAnim < 7) {
             currentAnim++;
             movement();
@@ -47,12 +48,17 @@ public class BugSpray extends Mario {
         }
     }
 
+    public boolean getRegisterHit() {
+        return registerHit;
+    }
+
     public boolean getSpraying() {
         return spraying;
     }
 
     public void forceSprayOff() {
         spraying = false;
+        currentAnim = 0;
     }
 
     public int getAnim() {

@@ -91,7 +91,7 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
             }
             if (timer >= 1000000000) {
                 System.out.println("FPS " + drawCount);
-                if (bonusTime <= 0 || mario.getDeath())
+                if (bonusTime <= 0 || dk.getDeath())
                     death();
                 else {
                     dk.move(playerX, playerY);
@@ -106,7 +106,7 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
             }
             if (timer2 >= 99999999) {
                 if(bs.getSpraying()) {
-                    bs.animSet();
+                    bs.animSet(dk.getPosX(), dk.getPosY());
                 }
                 timer2 = 0;
             }
@@ -139,10 +139,19 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
     }
 
     public void setLevel(int level) {
-        if (level > 3 ) {
+        if (level > 3) {
             new DonkeyKong3(currentScore, 0, lives, aiLevel);
             myFrame.dispatchEvent(new WindowEvent(myFrame, WindowEvent.WINDOW_CLOSING));
         }
+    }
+
+    public void restartLevel() {
+        new DonkeyKong3(currentScore, level, lives, aiLevel);
+        myFrame.dispatchEvent(new WindowEvent(myFrame, WindowEvent.WINDOW_CLOSING));
+    }
+
+    public void gameOver() {
+        myFrame.dispatchEvent(new WindowEvent(myFrame, WindowEvent.WINDOW_CLOSING));
     }
 
     public void update() {
@@ -177,6 +186,12 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
         g2.drawImage(tool.getImage("sprites/dk/" + dk.getAnim() + ".png"), dk.getPosX(), dk.getPosY(), dk.getSizeX(), dk.getSizeY(), this);
 
         // Draw Bug Spray
+
+        if (bs.getPosY() >= dk.getPosY() && bs.getPosY() <= dk.getPosY() + 50 && bs.getPosX() >= dk.getPosX() && bs.getPosX() <= dk.getPosX()) {
+            System.out.println("HITHITHIHTIT");
+            bs.forceSprayOff();
+            dk.hit();
+        }
         g2.drawImage(tool.getImage("sprites/smoke/" + bs.getAnim() + ".png"), bs.getPosX(), bs.getPosY(), bs.getSizeX(), bs.getSizeY(), this);
 
         // Score Display
@@ -195,12 +210,11 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
 
     public void death() {
         lives--;
-        mario.setDeath();
-        System.out.println("FINAL DEATH");
-    }
-
-    public int getLevel() {
-        return level;
+        mario.setDeath(); 
+        if (lives > 0)
+            restartLevel();
+        else
+            gameOver();
     }
 
     // Movement Booleans

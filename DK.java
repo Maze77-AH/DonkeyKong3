@@ -19,13 +19,13 @@ public class DK {
     }
 
     public void move(int posXMario, int posYMario) {
-        if (posY >= 300) {
+        if (posY >= 350) {
             marioDeath = true;
             if(currentAnim == 10)
                 currentAnim = 9;
             else if(currentAnim != 9 || currentAnim != 10)
                 currentAnim = 10;
-            posX = posXMario - 25;
+            posX = posXMario - 100;
             posY = posYMario;
         }
         else {
@@ -35,6 +35,10 @@ public class DK {
             else
                 currentAnim = 5;
         }
+    }
+
+    public void hit() {
+        posY -= 10;
     }
 
     public boolean getDeath() {
