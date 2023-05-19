@@ -1,6 +1,8 @@
 public class Enemy extends DonkeyKong3 {
-    public Enemy(int rarity) {
+    public int rarity;
 
+    public Enemy(int rarity) {
+        this.rarity = rarity;
     }
 
     public int checkingSpace(int index, int y) {

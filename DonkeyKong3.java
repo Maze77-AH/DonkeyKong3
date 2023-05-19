@@ -68,18 +68,20 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
         int timer = 0;
         int drawCount = 0;
 
-        double drawInterval2 = 1000000000 / fps/2;
+        double drawInterval2 = 1000000000 / 120;
         double delta2 = 0;
         long lastTime2 = System.nanoTime();
-        long currentTime2 = System.nanoTime();
         int timer2 = 0;
-        int drawCount2 = 0;
 
         while (myFrame != null) {
             currentTime = System.nanoTime();
             delta += (currentTime - lastTime) / drawInterval;
             timer += (currentTime - lastTime);
             lastTime = currentTime;
+
+            delta2 += (currentTime - lastTime2) / drawInterval2;
+            timer2 += (currentTime - lastTime2);
+            lastTime2 = currentTime;
 
             if (delta >= 1) {
                 update();
@@ -98,24 +100,15 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
                     timer = 0;
                 }
             }
-        }
-
-        // Bugs and Spray
-
-        while (myFrame != null) {
-            currentTime2 = System.nanoTime();
-            delta2 += (currentTime2 - lastTime2) / drawInterval2;
-            timer2 += (currentTime2 - lastTime2);
-            lastTime2 = currentTime2;
 
             if (delta2 >= 1) {
-                update();
-                repaint();
                 delta2--;
-                drawCount2++;
             }
-            if (timer >= 1000000000) {
-                if(bs.getSpraying())
+            if (timer2 >= 99999999) {
+                if(bs.getSpraying()) {
+                    bs.animSet();
+                }
+                timer2 = 0;
             }
         }
     }

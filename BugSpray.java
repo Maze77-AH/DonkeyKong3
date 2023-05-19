@@ -11,13 +11,13 @@ public class BugSpray extends Mario {
     private boolean spraying = false;
     private int posX;
     private int posY;
-    private int sizeX = 10;
-    private int sizeY = 10;
-    private int currentAnim = 8;
+    private int sizeX = 25;
+    private int sizeY = 25;
+    private int currentAnim = 0;
     
     public BugSpray(boolean extreme) {
         this.extreme = extreme;
-        currentAnim = 8;
+        currentAnim = 0;
     }
 
     public void puff() {
@@ -25,23 +25,32 @@ public class BugSpray extends Mario {
             spraying = true;
             posX = super.getPosX();
             posY = super.getPosY();
+            movement();
         }
     }
 
     public void animSet() {
         if (currentAnim < 7)
             currentAnim++;
-        else
+        else {
             currentAnim = 8;
+            spraying = false;
+            currentAnim = 0;
+        }
     }
     
     public void movement() {
-        
-            
+        if (spraying) {
+            posY += 15;
+        }
     }
 
     public boolean getSpraying() {
         return spraying;
+    }
+
+    public void forceSprayOff() {
+        spraying = false;
     }
 
     public int getAnim() {
