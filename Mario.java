@@ -7,10 +7,12 @@ public class Mario {
     private boolean death = false;
 
     public void move() {
-      if (currentAnim < 3)
-          currentAnim++;
-      else
-          currentAnim = 0;
+      if (death == false) {
+        if (currentAnim < 3)
+            currentAnim++;
+        else
+            currentAnim = 0;
+      }
     }
 
     public int getAnimMario() {

@@ -14,7 +14,7 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
     private int level;
     private int windowWidth = 899;
     private int windowHeight = 1020;
-    private boolean up, down, left, right;
+    private boolean up, down, left, right, bugSpray;
     private int fps = 60;
     private int aiLevel;
     private int bonusTime = 8000;
@@ -196,6 +196,9 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
             } else if (event.getKeyCode() == KeyEvent.VK_S) {
                 down = true;
             }
+            if (event.getKeyCode() == KeyEvent.VK_SPACE) {
+                bugSpray = true;
+            }
         }
     }
 
@@ -208,6 +211,9 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
             right = false;
         else if (event.getKeyCode() == KeyEvent.VK_S)
             down = false;
+        if (event.getKeyCode() == KeyEvent.VK_SPACE) {
+            bugSpray = false;
+        }
     }
 
     public void keyTyped(KeyEvent event) {
