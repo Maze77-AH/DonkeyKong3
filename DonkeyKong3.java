@@ -231,7 +231,11 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
 
     public void death() {
         lives--;
-        mario.setDeath(); 
+        mario.setDeath();
+        long timestamp = System.currentTimeMillis();
+        do {
+    
+        } while (System.currentTimeMillis() < timestamp + 1000);
         if (lives > 0)
             restartLevel();
         else

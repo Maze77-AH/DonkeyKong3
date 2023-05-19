@@ -60,6 +60,7 @@ public class BugSpray extends Mario {
 
     public void forceSprayOff() {
         spraying = false;
+        posY = 0;
         currentAnim = 0;
     }
 
