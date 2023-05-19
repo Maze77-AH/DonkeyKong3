@@ -1,5 +1,6 @@
 public class Enemy extends DonkeyKong3 {
     public int rarity;
+    public int[] enemyVariety = new int[8] {0, 2, 4, 1, 2, 3, 1, 0};
 
     public Enemy(int rarity) {
         this.rarity = rarity;

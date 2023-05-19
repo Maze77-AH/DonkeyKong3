@@ -91,10 +91,10 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
             }
             if (timer >= 1000000000) {
                 System.out.println("FPS " + drawCount);
-                if (bonusTime <= 0)
+                if (bonusTime <= 0 || mario.getDeath())
                     death();
                 else {
-                    dk.move();
+                    dk.move(playerX, playerY);
                     bonusTime -= 100;
                     drawCount = 0;
                     timer = 0;
@@ -139,7 +139,7 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
     }
 
     public void setLevel(int level) {
-        if (level >= 3 ) {
+        if (level > 3 ) {
             new DonkeyKong3(currentScore, 0, lives, aiLevel);
             myFrame.dispatchEvent(new WindowEvent(myFrame, WindowEvent.WINDOW_CLOSING));
         }
@@ -177,7 +177,6 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
         g2.drawImage(tool.getImage("sprites/dk/" + dk.getAnim() + ".png"), dk.getPosX(), dk.getPosY(), dk.getSizeX(), dk.getSizeY(), this);
 
         // Draw Bug Spray
-
         g2.drawImage(tool.getImage("sprites/smoke/" + bs.getAnim() + ".png"), bs.getPosX(), bs.getPosY(), bs.getSizeX(), bs.getSizeY(), this);
 
         // Score Display
@@ -190,14 +189,14 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
         mario.updatePosX(playerX);
         mario.updatePosY(playerY);
 
-        // g2.fillRect(playerX, playerY, 800, 800);
+        // g2.fillRect(dk.getPosX() + 50, dk.getPosY() + 100, 100, 50);
         g2.dispose();
     }
 
     public void death() {
         lives--;
         mario.setDeath();
-        myFrame.setFocusable(false);
+        System.out.println("FINAL DEATH");
     }
 
     public int getLevel() {
@@ -220,9 +219,6 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
             } else if (event.getKeyCode() == KeyEvent.VK_S) {
                 down = true;
             }
-            if (event.getKeyCode() == KeyEvent.VK_SPACE) {
-                bs.puff();
-            }
         }
     }
 
@@ -235,6 +231,9 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
             right = false;
         else if (event.getKeyCode() == KeyEvent.VK_S)
             down = false;
+        if (event.getKeyCode() == KeyEvent.VK_SPACE) {
+            bs.puff(playerX, playerY);
+        }
     }
 
     public void keyTyped(KeyEvent event) {

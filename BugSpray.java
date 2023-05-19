@@ -20,18 +20,20 @@ public class BugSpray extends Mario {
         currentAnim = 0;
     }
 
-    public void puff() {
+    public void puff(int posXMario, int posYMario) {
         if (super.getDeath() == false) {
             spraying = true;
-            posX = super.getPosX();
-            posY = super.getPosY();
-            movement();
+            System.out.println(super.getPosX());
+            posX = posXMario;
+            posY = posYMario;
         }
     }
 
     public void animSet() {
-        if (currentAnim < 7)
+        if (currentAnim < 7) {
             currentAnim++;
+            movement();
+        }
         else {
             currentAnim = 8;
             spraying = false;
@@ -41,7 +43,7 @@ public class BugSpray extends Mario {
     
     public void movement() {
         if (spraying) {
-            posY += 15;
+            this.posY -= 50;
         }
     }
 

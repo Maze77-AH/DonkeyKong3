@@ -1,4 +1,4 @@
-public class DK extends Mario {
+public class DK {
 
     private int posX;
     private int posY;
@@ -7,6 +7,7 @@ public class DK extends Mario {
     private int currentAnim = 5;
     private int level;
     private int aiLevel;
+    private boolean marioDeath = false;
 
     public DK(int level, int aiLevel) {
         this.level = level;
@@ -17,14 +18,15 @@ public class DK extends Mario {
         }
     }
 
-    public void move() {
+    public void move(int posXMario, int posYMario) {
         if (posY >= 300) {
-            super.setDeath();
+            marioDeath = true;
             if(currentAnim == 10)
                 currentAnim = 9;
             else if(currentAnim != 9 || currentAnim != 10)
                 currentAnim = 10;
-            posY = super.getPosY();
+            posX = posXMario - 25;
+            posY = posYMario;
         }
         else {
             posY += aiLevel;
@@ -33,6 +35,10 @@ public class DK extends Mario {
             else
                 currentAnim = 5;
         }
+    }
+
+    public boolean getDeath() {
+        return marioDeath;
     }
 
     public int getAnim() {

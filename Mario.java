@@ -1,10 +1,14 @@
 public class Mario {
-    private int playerX = 700;
-    private int playerY = 700;
+    private int posX = 700;
+    private int posY = 700;
     private int perPixel = 4;
     private int totalPlayerY = 0;
     private int currentAnim = 0;
-    private boolean death = false;
+    private boolean death;
+
+    public Mario() {
+      death = false;
+    }
 
     public void move() {
       if (death == false) {
@@ -16,34 +20,35 @@ public class Mario {
       else 
         currentAnim = 4;
     }
-
-    public int getAnimMario() {
-      return currentAnim;
-    }
-
+    
     public void setDeath() {
       death = true;
       currentAnim = 4;
+      System.out.println("DEATH");
+    }
+
+    public void updatePosX(int posX) {
+      this.posX = posX;
+    }
+
+    public void updatePosY(int posY) {
+      this.posY = posY;
+    }
+
+    public int getAnimMario() {
+      return currentAnim;
     }
 
     public boolean getDeath() {
         return death;
     }
 
-    public void updatePosX(int posX) {
-      playerX = posX;
-    }
-
-    public void updatePosY(int posY) {
-      playerY = posY;
-    }
-
     public int getPosX() {
-      return playerX;
+      return this.posX;
     }
 
     public int getPosY() {
-      return playerY;
+      return this.posY;
     }
 
     public int getPerPixel() {
