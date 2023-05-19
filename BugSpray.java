@@ -8,10 +8,11 @@ import java.io.IOException;
 
 public class BugSpray extends Mario {
     private boolean extreme;
+    private boolean spraying = false;
     private int posX;
     private int posY;
-    private int sizeX = 210;
-    private int sizeY = 150;
+    private int sizeX = 10;
+    private int sizeY = 10;
     private int currentAnim = 8;
     
     public BugSpray(boolean extreme) {
@@ -21,24 +22,26 @@ public class BugSpray extends Mario {
 
     public void puff() {
         if (super.getDeath() == false) {
-            link();
-            if (currentAnim < 7)
-                currentAnim++;
-            else
-                currentAnim = 0;
-          }
+            spraying = true;
+            posX = super.getPosX();
+            posY = super.getPosY();
+        }
     }
 
-    public void link() {
-        while(super.getBugSpray() == false) {
-            posX = getPosX();
-            super.setBugSpray(false);
-        }
+    public void animSet() {
+        if (currentAnim < 7)
+            currentAnim++;
+        else
+            currentAnim = 8;
     }
     
     public void movement() {
         
             
+    }
+
+    public boolean getSpraying() {
+        return spraying;
     }
 
     public int getAnim() {

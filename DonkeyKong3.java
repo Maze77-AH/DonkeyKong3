@@ -14,7 +14,7 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
     private int level;
     private int windowWidth = 899;
     private int windowHeight = 1020;
-    private boolean up, down, left, right, bugSpray;
+    private boolean up, down, left, right;
     private int fps = 60;
     private int aiLevel;
     private int bonusTime = 8000;
@@ -68,6 +68,13 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
         int timer = 0;
         int drawCount = 0;
 
+        double drawInterval2 = 1000000000 / fps/2;
+        double delta2 = 0;
+        long lastTime2 = System.nanoTime();
+        long currentTime2 = System.nanoTime();
+        int timer2 = 0;
+        int drawCount2 = 0;
+
         while (myFrame != null) {
             currentTime = System.nanoTime();
             delta += (currentTime - lastTime) / drawInterval;
@@ -90,6 +97,25 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
                     drawCount = 0;
                     timer = 0;
                 }
+            }
+        }
+
+        // Bugs and Spray
+
+        while (myFrame != null) {
+            currentTime2 = System.nanoTime();
+            delta2 += (currentTime2 - lastTime2) / drawInterval2;
+            timer2 += (currentTime2 - lastTime2);
+            lastTime2 = currentTime2;
+
+            if (delta2 >= 1) {
+                update();
+                repaint();
+                delta2--;
+                drawCount2++;
+            }
+            if (timer >= 1000000000) {
+                if(bs.getSpraying())
             }
         }
     }
@@ -178,6 +204,7 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
     public void death() {
         lives--;
         mario.setDeath();
+        myFrame.setFocusable(false);
     }
 
     public int getLevel() {
@@ -201,9 +228,7 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
                 down = true;
             }
             if (event.getKeyCode() == KeyEvent.VK_SPACE) {
-                bugSpray = true;
                 bs.puff();
-                mario.setBugSpray(true);
             }
         }
     }
@@ -217,10 +242,6 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
             right = false;
         else if (event.getKeyCode() == KeyEvent.VK_S)
             down = false;
-        if (event.getKeyCode() == KeyEvent.VK_SPACE) {
-            bugSpray = false;
-            mario.setBugSpray(false);
-        }
     }
 
     public void keyTyped(KeyEvent event) {
