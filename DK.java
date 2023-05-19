@@ -38,6 +38,7 @@ public class DK {
     }
 
     public void hit() {
+        currentAnim = 5;
         posY -= 10;
     }
 
