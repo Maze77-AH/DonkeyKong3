@@ -23,8 +23,8 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
     private DK dk = new DK(level, aiLevel);
     private BugSpray bs = new BugSpray(false);
 
-    int playerX = 700;
-    int playerY = 700;
+    int playerX = 450;
+    int playerY = 860;
     int perPixel = 4;
 
     public DonkeyKong3() {
@@ -209,7 +209,7 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
         //if (bs.getPosY() >= dk.getPosY() && bs.getPosY() <= dk.getPosY() + 50 && bs.getPosX() >= dk.getPosX() && bs.getPosX() <= dk.getPosX()) {
 
         if (bs.getPosY() >= dk.getPosY() && bs.getPosY() <= dk.getPosY() + 50 && bs.getPosX() >= dk.getPosX() && bs.getPosX() <= dk.getPosX() + 150) {
-            System.out.println("HITHITHIHTIT");
+            System.out.println("HIT");
             bs.forceSprayOff();
             dk.hit();
         }
@@ -271,7 +271,8 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
         else if (event.getKeyCode() == KeyEvent.VK_S)
             down = false;
         if (event.getKeyCode() == KeyEvent.VK_SPACE) {
-            bs.puff(playerX, playerY);
+            if (!bs.getSpraying())
+                bs.puff(playerX, playerY);
         }
     }
 

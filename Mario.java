@@ -1,6 +1,6 @@
 public class Mario {
-    private int posX = 700;
-    private int posY = 700;
+    private int posX = 500;
+    private int posY = 1000;
     private int perPixel = 4;
     private int totalPlayerY = 0;
     private int currentAnim = 0;

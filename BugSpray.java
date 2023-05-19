@@ -24,7 +24,6 @@ public class BugSpray extends Mario {
     public void puff(int posXMario, int posYMario) {
         if (super.getDeath() == false) {
             spraying = true;
-            System.out.println(super.getPosX());
             posX = posXMario;
             posY = posYMario;
         }
