@@ -4,7 +4,7 @@ public class DK extends Mario {
     private int posY;
     private int sizeX = 210;
     private int sizeY = 150;
-    private int anim = 5;
+    private int currentAnim = 5;
     private int level;
     private int aiLevel;
 
@@ -20,23 +20,23 @@ public class DK extends Mario {
     public void move() {
         if (posY >= 300) {
             super.setDeath();
-            if(anim == 10)
-                anim = 9;
-            else if(anim != 9 || anim != 10)
-                anim = 10;
+            if(currentAnim == 10)
+                currentAnim = 9;
+            else if(currentAnim != 9 || currentAnim != 10)
+                currentAnim = 10;
             posY = super.getPosY();
         }
         else {
             posY += aiLevel;
-            if(anim < 7)
-                anim++;
+            if(currentAnim < 7)
+                currentAnim++;
             else
-                anim = 5;
+                currentAnim = 5;
         }
     }
 
     public int getAnim() {
-        return anim;
+        return currentAnim;
     }
 
     public int getPosX() {

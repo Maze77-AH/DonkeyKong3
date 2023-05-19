@@ -21,6 +21,7 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
 
     private Mario mario = new Mario();
     private DK dk = new DK(level, aiLevel);
+    private BugSpray bs = new BugSpray(false);
 
     int playerX = 700;
     int playerY = 700;
@@ -58,7 +59,6 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
     }
 
     public void setFPSandPaint() {
-
         // Set FPS (information found on Stack Overflow)
 
         double drawInterval = 1000000000 / fps;
@@ -157,6 +157,10 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
 
         g2.drawImage(tool.getImage("sprites/dk/" + dk.getAnim() + ".png"), dk.getPosX(), dk.getPosY(), dk.getSizeX(), dk.getSizeY(), this);
 
+        // Draw Bug Spray
+
+        g2.drawImage(tool.getImage("sprites/smoke/" + bs.getAnim() + ".png"), bs.getPosX(), bs.getPosY(), bs.getSizeX(), bs.getSizeY(), this);
+
         // Score Display
         g2.setColor(Color.orange);
         g2.setFont(new Font("Monospace", Font.PLAIN, 40)); 
@@ -198,6 +202,8 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
             }
             if (event.getKeyCode() == KeyEvent.VK_SPACE) {
                 bugSpray = true;
+                bs.puff();
+                mario.setBugSpray(true);
             }
         }
     }
@@ -213,6 +219,7 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
             down = false;
         if (event.getKeyCode() == KeyEvent.VK_SPACE) {
             bugSpray = false;
+            mario.setBugSpray(false);
         }
     }
 

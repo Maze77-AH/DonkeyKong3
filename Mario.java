@@ -1,9 +1,10 @@
 public class Mario {
-    public int playerX = 700;
-    public int playerY = 700;
-    public int perPixel = 4;
-    public int totalPlayerY = 0;
+    private int playerX = 700;
+    private int playerY = 700;
+    private int perPixel = 4;
+    private int totalPlayerY = 0;
     private int currentAnim = 0;
+    private boolean bugSpray = false;
     private boolean death = false;
 
     public void move() {
@@ -13,6 +14,17 @@ public class Mario {
         else
             currentAnim = 0;
       }
+      else 
+        currentAnim = 4;
+    }
+
+
+    public void setBugSpray(boolean b) {
+      bugSpray = b;
+    }
+
+    public boolean getBugSpray() {
+      return bugSpray;
     }
 
     public int getAnimMario() {
@@ -21,6 +33,7 @@ public class Mario {
 
     public void setDeath() {
       death = true;
+      currentAnim = 4;
     }
 
     public boolean getDeath() {
