@@ -17,16 +17,16 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
     private boolean up, down, left, right;
     private int fps = 60;
     private int aiLevel;
+    private int playerX = 450;
+    private int playerY = 860;
+    private int perPixel = 4;
+    private int previousYLoc = 860;
     private int bonusTime = 8000;
 
     private Mario mario = new Mario();
     private DK dk = new DK(level, aiLevel);
     private BugSpray bs = new BugSpray(false);
     private BugSpray bs2 = new BugSpray(false);
-
-    int playerX = 450;
-    int playerY = 860;
-    int perPixel = 4;
 
     public DonkeyKong3() {
         this(0, 0, 3, 1);
@@ -128,6 +128,12 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
                 delta3--;
             }
             if (timer3 >= 40000000) {
+                if(up && playerY - 1 < previousYLoc + 50) {
+                    playerY -= 15;
+                }
+                else if(down && playerY < 860) {
+                    playerY += 15;
+                }
                 if(bs.getSpraying()) {
                     bs.movement();
                 }
@@ -182,14 +188,10 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
 
     public void update() {
         if (mario.getDeath() == false) {
-            if (up)
-                playerY -= perPixel;
-            else if (left)
+            if (left)
                 playerX -= perPixel;
             else if (right)
                 playerX += perPixel;
-            else if (down)
-                playerY += perPixel;
         }
     }
 
@@ -263,6 +265,7 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
                 left = true;
             } else if (event.getKeyCode() == KeyEvent.VK_W) {
                 up = true;
+                previousYLoc = playerY;
             }
             else if (event.getKeyCode() == KeyEvent.VK_D) {
                 mario.move();
@@ -276,12 +279,8 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
     public void keyReleased(KeyEvent event) {
         if (event.getKeyCode() == KeyEvent.VK_A)
             left = false;
-        else if (event.getKeyCode() == KeyEvent.VK_W)
-            up = false;
         else if (event.getKeyCode() == KeyEvent.VK_D)
             right = false;
-        else if (event.getKeyCode() == KeyEvent.VK_S)
-            down = false;
         if (event.getKeyCode() == KeyEvent.VK_SPACE) {
             if (!bs2.getSpraying() && bs.getSpraying())
                 bs2.puff(playerX, playerY);
