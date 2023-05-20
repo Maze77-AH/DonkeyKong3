@@ -25,6 +25,7 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
     private int jumpCount = 0;
     private boolean decending = false;
     private boolean marioWin = false;
+    private boolean exception = false;
 
     private Mario mario = new Mario();
     private DK dk = new DK(level, aiLevel);
@@ -36,10 +37,10 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
     }
 
     public DonkeyKong3(int score, int level, int lives, int aiLevel) {
-        this.currentScore = score;
         this.lives = lives;
         this.aiLevel = aiLevel;
         this.level = level;
+        scoreIncrease(score);
         myFrame = new JFrame("Donkey Kong 3");
         myFrame.setSize(windowWidth, windowHeight);
         myFrame.setAlwaysOnTop(false);
@@ -63,7 +64,7 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
     }
 
     public void setFPSandPaint() {
-        // Set FPS (information found on Stack Overflow)
+        // Set FPS information modified from Stack Overflow
 
         double drawInterval = 1000000000 / fps;
         double delta = 0;
@@ -120,10 +121,10 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
                 delta2--;
             }
             if (timer2 >= 99999999) {
-                if(bs.getSpraying()) {
+                if (bs.getSpraying()) {
                     bs.animSet(dk.getPosX(), dk.getPosY());
                 }
-                if(bs2.getSpraying()) {
+                if (bs2.getSpraying()) {
                     bs2.animSet(dk.getPosX(), dk.getPosY());
                 }
                 timer2 = 0;
@@ -133,32 +134,50 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
                 delta3--;
             }
             if (timer3 >= 40000000) {
-                if(up && playerY > previousYLoc - 120 && !decending && jumpCount < 24) {
+                if (up && playerY > previousYLoc - 120 && !decending && jumpCount < 24) {
                     playerY -= 15;
                     jumpCount++;
                 }
-                if(up && playerY == previousYLoc - 120 && !decending) {
+                if (up && playerY > previousYLoc - 120 && !decending && jumpCount < 32 && jumpCount >= 24) {
+                    playerY -= 15;
+                    jumpCount++;
+                }
+                if (jumpCount == 32) {
+                    exception = true;
+                    down = true;
+                }
+                if (up && playerY == previousYLoc - 120 && !decending && !exception) {
                     decending = true;
                 }
-                if(decending) {
+                if (decending) {
                     playerY += 15;
                 }
-                if(up && playerY > previousYLoc - 100 && decending) {
+                if (up && playerY > previousYLoc - 100 && decending) {
                     up = false;
                     decending = false;
                 }
-                else if(down && playerY < 860 && !decending) {
+                else if (down && playerY < 860 && !decending) {
                     decending = true;
                 }
-                if(down && playerY > previousYLoc + 80 && decending) {
+                if (down && playerY > previousYLoc - 10 && decending && exception) {
+                    down = false;
+                    up = false;
+                    decending = false;
+                    exception = false;
+                    if (jumpCount >= 0)
+                        jumpCount -= 8;
+                }
+                if (down && playerY > previousYLoc + 80 && decending) {
                     down = false;
                     decending = false;
-                    jumpCount -= 8;
+                    exception = false;
+                    if (jumpCount >= 0)
+                        jumpCount -= 8;
                 }
-                if(bs.getSpraying()) {
+                if (bs.getSpraying()) {
                     bs.movement();
                 }
-                if(bs2.getSpraying()) {
+                if (bs2.getSpraying()) {
                     bs2.movement();
                 }
                 timer3 = 0;
@@ -195,12 +214,9 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
         repaint();
         marioWin = true;
         mario.setMarioWin(level);
-        try
-        {
-          Thread.sleep(3000);   
-        }
-        catch(InterruptedException ex)
-        {
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException ex) {
             ex.printStackTrace();
         }
         new DonkeyKong3(currentScore + 100, level + 1, lives, aiLevel + 1);
@@ -216,12 +232,9 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
 
     public void restartLevel() {
         repaint();
-        try
-        {
-          Thread.sleep(3000);   
-        }
-        catch(InterruptedException ex)
-        {
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException ex) {
             ex.printStackTrace();
         }
         new DonkeyKong3(currentScore, level, lives, aiLevel);
@@ -234,9 +247,9 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
 
     public void update() {
         if (mario.getDeath() == false) {
-            if (left)
+            if (left && !(playerX < 200))
                 playerX -= perPixel;
-            else if (right)
+            else if (right && !(playerX > 650))
                 playerX += perPixel;
         }
     }
@@ -257,31 +270,36 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
 
         // Draw Donkey Kong
 
-        g2.drawImage(tool.getImage("sprites/dk/" + dk.getAnim() + ".png"), dk.getPosX(), dk.getPosY(), dk.getSizeX(), dk.getSizeY(), this);
+        g2.drawImage(tool.getImage("sprites/dk/" + dk.getAnim() + ".png"), dk.getPosX(), dk.getPosY(), dk.getSizeX(),
+                dk.getSizeY(), this);
 
         // Draw Bug Spray
 
-        if (bs.getPosY() >= dk.getPosY() && bs.getPosY() <= dk.getPosY() + 50 && bs.getPosX() >= dk.getPosX() && bs.getPosX() <= dk.getPosX() + 150) {
+        if (bs.getPosY() >= dk.getPosY() && bs.getPosY() <= dk.getPosY() + 50 && bs.getPosX() >= dk.getPosX()
+                && bs.getPosX() <= dk.getPosX() + 150) {
             System.out.println("HIT");
             bs.forceSprayOff();
             dk.hit();
         }
-        g2.drawImage(tool.getImage("sprites/smoke/" + bs.getAnim() + ".png"), bs.getPosX(), bs.getPosY(), bs.getSizeX(), bs.getSizeY(), this);
+        g2.drawImage(tool.getImage("sprites/smoke/" + bs.getAnim() + ".png"), bs.getPosX(), bs.getPosY(), bs.getSizeX(),
+                bs.getSizeY(), this);
 
-        if (bs2.getPosY() >= dk.getPosY() && bs2.getPosY() <= dk.getPosY() + 50 && bs2.getPosX() >= dk.getPosX() && bs2.getPosX() <= dk.getPosX() + 150) {
+        if (bs2.getPosY() >= dk.getPosY() && bs2.getPosY() <= dk.getPosY() + 50 && bs2.getPosX() >= dk.getPosX()
+                && bs2.getPosX() <= dk.getPosX() + 150) {
             System.out.println("HIT2");
             bs2.forceSprayOff();
             dk.hit();
         }
-        g2.drawImage(tool.getImage("sprites/smoke/" + bs2.getAnim() + ".png"), bs2.getPosX(), bs2.getPosY(), bs2.getSizeX(), bs2.getSizeY(), this);
+        g2.drawImage(tool.getImage("sprites/smoke/" + bs2.getAnim() + ".png"), bs2.getPosX(), bs2.getPosY(),
+                bs2.getSizeX(), bs2.getSizeY(), this);
 
         // Score Display
         g2.setColor(Color.orange);
-        g2.setFont(new Font("Monospace", Font.PLAIN, 40)); 
+        g2.setFont(new Font("Monospace", Font.PLAIN, 40));
         g2.drawString(Integer.toString(currentScore), 125, 30);
         g2.drawString(Integer.toString(highScores), 450, 30);
-        g2.drawString(Integer.toString(bonusTime),  760, 100);
-        
+        g2.drawString(Integer.toString(bonusTime), 760, 100);
+
         if (marioWin)
             g2.drawString(Integer.toString(currentScore) + " current points", 350, 500);
 
@@ -297,7 +315,7 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
         mario.setDeath();
         long timestamp = System.currentTimeMillis();
         do {
-    
+
         } while (System.currentTimeMillis() < timestamp + 1000);
         if (lives > 0)
             restartLevel();
@@ -309,19 +327,18 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
 
     public void keyPressed(KeyEvent event) {
         if (mario.getDeath() == false) {
-            if (event.getKeyCode() == KeyEvent.VK_A) {
+            if (event.getKeyCode() == KeyEvent.VK_A && !(playerX < 200)) {
                 mario.move();
                 left = true;
-            } else if (event.getKeyCode() == KeyEvent.VK_W) {
+            } else if (event.getKeyCode() == KeyEvent.VK_W && jumpCount < 25) {
                 if (!up) {
                     up = true;
                     previousYLoc = playerY;
                 }
-            }
-            else if (event.getKeyCode() == KeyEvent.VK_D) {
+            } else if (event.getKeyCode() == KeyEvent.VK_D && !(playerX > 650)) {
                 mario.move();
                 right = true;
-            } else if (event.getKeyCode() == KeyEvent.VK_S) {
+            } else if (event.getKeyCode() == KeyEvent.VK_S && playerY < 860) {
                 if (!down) {
                     down = true;
                     previousYLoc = playerY;
