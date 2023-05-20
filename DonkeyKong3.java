@@ -215,15 +215,13 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
 
         if (bs.getPosY() >= dk.getPosY() && bs.getPosY() <= dk.getPosY() + 50 && bs.getPosX() >= dk.getPosX() && bs.getPosX() <= dk.getPosX() + 150) {
             System.out.println("HIT");
-            scoreIncrease(5);
             bs.forceSprayOff();
             dk.hit();
         }
         g2.drawImage(tool.getImage("sprites/smoke/" + bs.getAnim() + ".png"), bs.getPosX(), bs.getPosY(), bs.getSizeX(), bs.getSizeY(), this);
 
         if (bs2.getPosY() >= dk.getPosY() && bs2.getPosY() <= dk.getPosY() + 50 && bs2.getPosX() >= dk.getPosX() && bs2.getPosX() <= dk.getPosX() + 150) {
-            System.out.println("HIT");
-            scoreIncrease(5);
+            System.out.println("HIT2");
             bs2.forceSprayOff();
             dk.hit();
         }
