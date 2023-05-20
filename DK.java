@@ -4,7 +4,7 @@ public class DK {
     private int posY;
     private int sizeX = 210;
     private int sizeY = 150;
-    private int currentAnim = 5;
+    private int currentAnim = 6;
     private int level;
     private int aiLevel;
     private int globalCount = 0;
@@ -22,31 +22,29 @@ public class DK {
     }
 
     public void move(int posXMario, int posYMario) {
-        if (stopHarm)
+        if (stopHarm && globalCount < 3)
             whackBugs();
         if (!stopHarm) {
             globalCount = 0;
             if (posY <= 50) {
                 marioWin = true;
                 currentAnim = 5;
-            }
-            else if (posY >= 350) {
+            } else if (posY >= 350) {
                 marioDeath = true;
-                if(currentAnim == 10)
+                if (currentAnim == 10)
                     currentAnim = 9;
-                else if(currentAnim != 9 || currentAnim != 10)
+                else if (currentAnim != 9 || currentAnim != 10)
                     currentAnim = 10;
                 posX = posXMario - 100;
                 posY = posYMario;
-            }
-            else {
+            } else {
                 posY += aiLevel;
-                if(currentAnim < 7)
+                if (currentAnim < 7)
                     currentAnim++;
                 else
                     currentAnim = 6;
             }
-            if ((int)Math.random() * 2 == 1) {
+            if ((int)(Math.random() * 5) == 2) {
                 whackBugs();
             }
         }
@@ -64,14 +62,14 @@ public class DK {
             }
             if (globalCount == 2) {
                 stopHarm = false;
-                currentAnim = 9;
+                currentAnim = 6;
             }
             globalCount++;
         }
     }
 
     public void hit() {
-        if (!stopHarm || !marioWin) {
+        if (!stopHarm || !marioWin && !stopHarm) {
             currentAnim = 5;
             posY -= 10;
         }
@@ -92,12 +90,15 @@ public class DK {
     public int getPosX() {
         return posX;
     }
+
     public int getPosY() {
         return posY;
     }
+
     public int getSizeX() {
         return sizeX;
     }
+
     public int getSizeY() {
         return sizeY;
     }

@@ -23,6 +23,7 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
     private int previousYLoc = 860;
     private int bonusTime = 8000;
     private int jumpCount = 0;
+    private int bonusScore = 500;
     private boolean decending = false;
     private boolean marioWin = false;
     private boolean exception = false;
@@ -301,7 +302,7 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
         g2.drawString(Integer.toString(bonusTime), 760, 100);
 
         if (marioWin)
-            g2.drawString(Integer.toString(currentScore) + " current points", 350, 500);
+            g2.drawString(Integer.toString(bonusScore) + " bonus points", 350, 500);
 
         mario.updatePosX(playerX);
         mario.updatePosY(playerY);
