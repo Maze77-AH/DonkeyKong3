@@ -27,6 +27,17 @@ public class Mario {
       System.out.println("DEATH");
     }
 
+    public void setMarioWin(int level) {
+      death = false;
+      if(level == 1) {
+
+      }
+      else {
+        currentAnim = 5;
+      }
+      System.out.println("WIN");
+    }
+
     public void updatePosX(int posX) {
       this.posX = posX;
     }

@@ -22,6 +22,9 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
     private int perPixel = 4;
     private int previousYLoc = 860;
     private int bonusTime = 8000;
+    private int jumpCount = 0;
+    private boolean decending = false;
+    private boolean marioWin = false;
 
     private Mario mario = new Mario();
     private DK dk = new DK(level, aiLevel);
@@ -101,7 +104,9 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
             }
             if (timer >= 1000000000) {
                 System.out.println("FPS " + drawCount);
-                if (bonusTime <= 0 || dk.getDeath())
+                if (dk.getMarioWin())
+                    marioWinSetLevel(level);
+                else if (bonusTime <= 0 || dk.getDeath())
                     death();
                 else {
                     dk.move(playerX, playerY);
@@ -128,11 +133,27 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
                 delta3--;
             }
             if (timer3 >= 40000000) {
-                if(up && playerY - 1 < previousYLoc + 50) {
+                if(up && playerY > previousYLoc - 120 && !decending && jumpCount < 24) {
                     playerY -= 15;
+                    jumpCount++;
                 }
-                else if(down && playerY < 860) {
+                if(up && playerY == previousYLoc - 120 && !decending) {
+                    decending = true;
+                }
+                if(decending) {
                     playerY += 15;
+                }
+                if(up && playerY > previousYLoc - 100 && decending) {
+                    up = false;
+                    decending = false;
+                }
+                else if(down && playerY < 860 && !decending) {
+                    decending = true;
+                }
+                if(down && playerY > previousYLoc + 80 && decending) {
+                    down = false;
+                    decending = false;
+                    jumpCount -= 8;
                 }
                 if(bs.getSpraying()) {
                     bs.movement();
@@ -170,6 +191,22 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
         return currentScore;
     }
 
+    public void marioWinSetLevel(int level) {
+        repaint();
+        marioWin = true;
+        mario.setMarioWin(level);
+        try
+        {
+          Thread.sleep(3000);   
+        }
+        catch(InterruptedException ex)
+        {
+            ex.printStackTrace();
+        }
+        new DonkeyKong3(currentScore + 100, level + 1, lives, aiLevel + 1);
+        myFrame.dispatchEvent(new WindowEvent(myFrame, WindowEvent.WINDOW_CLOSING));
+    }
+
     public void setLevel(int level) {
         if (level > 3) {
             new DonkeyKong3(currentScore, 0, lives, aiLevel);
@@ -178,6 +215,15 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
     }
 
     public void restartLevel() {
+        repaint();
+        try
+        {
+          Thread.sleep(3000);   
+        }
+        catch(InterruptedException ex)
+        {
+            ex.printStackTrace();
+        }
         new DonkeyKong3(currentScore, level, lives, aiLevel);
         myFrame.dispatchEvent(new WindowEvent(myFrame, WindowEvent.WINDOW_CLOSING));
     }
@@ -235,6 +281,9 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
         g2.drawString(Integer.toString(currentScore), 125, 30);
         g2.drawString(Integer.toString(highScores), 450, 30);
         g2.drawString(Integer.toString(bonusTime),  760, 100);
+        
+        if (marioWin)
+            g2.drawString(Integer.toString(currentScore) + " current points", 350, 500);
 
         mario.updatePosX(playerX);
         mario.updatePosY(playerY);
@@ -264,14 +313,19 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
                 mario.move();
                 left = true;
             } else if (event.getKeyCode() == KeyEvent.VK_W) {
-                up = true;
-                previousYLoc = playerY;
+                if (!up) {
+                    up = true;
+                    previousYLoc = playerY;
+                }
             }
             else if (event.getKeyCode() == KeyEvent.VK_D) {
                 mario.move();
                 right = true;
             } else if (event.getKeyCode() == KeyEvent.VK_S) {
-                down = true;
+                if (!down) {
+                    down = true;
+                    previousYLoc = playerY;
+                }
             }
         }
     }

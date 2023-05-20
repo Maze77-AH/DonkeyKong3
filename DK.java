@@ -10,6 +10,7 @@ public class DK {
     private int globalCount = 0;
     private boolean stopHarm = false;
     private boolean marioDeath = false;
+    private boolean marioWin = false;
 
     public DK(int level, int aiLevel) {
         this.level = level;
@@ -25,7 +26,11 @@ public class DK {
             whackBugs();
         if (!stopHarm) {
             globalCount = 0;
-            if (posY >= 350) {
+            if (posY <= 50) {
+                marioWin = true;
+                currentAnim = 5;
+            }
+            else if (posY >= 350) {
                 marioDeath = true;
                 if(currentAnim == 10)
                     currentAnim = 9;
@@ -48,23 +53,25 @@ public class DK {
     }
 
     public void whackBugs() {
-        if (globalCount == 0) {
-            stopHarm = true;
-            currentAnim = 2;
+        if (!marioWin) {
+            if (globalCount == 0) {
+                stopHarm = true;
+                currentAnim = 2;
+            }
+            if (globalCount == 1) {
+                stopHarm = true;
+                currentAnim = 11;
+            }
+            if (globalCount == 2) {
+                stopHarm = false;
+                currentAnim = 9;
+            }
+            globalCount++;
         }
-        if (globalCount == 1) {
-            stopHarm = true;
-            currentAnim = 11;
-        }
-        if (globalCount == 2) {
-            stopHarm = false;
-            currentAnim = 9;
-        }
-        globalCount++;
     }
 
     public void hit() {
-        if (!stopHarm) {
+        if (!stopHarm || !marioWin) {
             currentAnim = 5;
             posY -= 10;
         }
@@ -72,6 +79,10 @@ public class DK {
 
     public boolean getDeath() {
         return marioDeath;
+    }
+
+    public boolean getMarioWin() {
+        return marioWin;
     }
 
     public int getAnim() {
