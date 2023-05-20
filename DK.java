@@ -7,6 +7,8 @@ public class DK {
     private int currentAnim = 5;
     private int level;
     private int aiLevel;
+    private int globalCount = 0;
+    private boolean stopHarm = false;
     private boolean marioDeath = false;
 
     public DK(int level, int aiLevel) {
@@ -19,27 +21,53 @@ public class DK {
     }
 
     public void move(int posXMario, int posYMario) {
-        if (posY >= 350) {
-            marioDeath = true;
-            if(currentAnim == 10)
-                currentAnim = 9;
-            else if(currentAnim != 9 || currentAnim != 10)
-                currentAnim = 10;
-            posX = posXMario - 100;
-            posY = posYMario;
-        }
-        else {
-            posY += aiLevel;
-            if(currentAnim < 7)
-                currentAnim++;
-            else
-                currentAnim = 5;
+        if (stopHarm)
+            whackBugs();
+        if (!stopHarm) {
+            globalCount = 0;
+            if (posY >= 350) {
+                marioDeath = true;
+                if(currentAnim == 10)
+                    currentAnim = 9;
+                else if(currentAnim != 9 || currentAnim != 10)
+                    currentAnim = 10;
+                posX = posXMario - 100;
+                posY = posYMario;
+            }
+            else {
+                posY += aiLevel;
+                if(currentAnim < 7)
+                    currentAnim++;
+                else
+                    currentAnim = 6;
+            }
+            if ((int)Math.random() * 2 == 1) {
+                whackBugs();
+            }
         }
     }
 
+    public void whackBugs() {
+        if (globalCount == 0) {
+            stopHarm = true;
+            currentAnim = 2;
+        }
+        if (globalCount == 1) {
+            stopHarm = true;
+            currentAnim = 11;
+        }
+        if (globalCount == 2) {
+            stopHarm = false;
+            currentAnim = 9;
+        }
+        globalCount++;
+    }
+
     public void hit() {
-        currentAnim = 5;
-        posY -= 10;
+        if (!stopHarm) {
+            currentAnim = 5;
+            posY -= 10;
+        }
     }
 
     public boolean getDeath() {

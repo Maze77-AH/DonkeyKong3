@@ -22,6 +22,7 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
     private Mario mario = new Mario();
     private DK dk = new DK(level, aiLevel);
     private BugSpray bs = new BugSpray(false);
+    private BugSpray bs2 = new BugSpray(false);
 
     int playerX = 450;
     int playerY = 860;
@@ -117,6 +118,9 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
                 if(bs.getSpraying()) {
                     bs.animSet(dk.getPosX(), dk.getPosY());
                 }
+                if(bs2.getSpraying()) {
+                    bs2.animSet(dk.getPosX(), dk.getPosY());
+                }
                 timer2 = 0;
             }
 
@@ -126,6 +130,9 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
             if (timer3 >= 40000000) {
                 if(bs.getSpraying()) {
                     bs.movement();
+                }
+                if(bs2.getSpraying()) {
+                    bs2.movement();
                 }
                 timer3 = 0;
             }
@@ -206,14 +213,21 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
 
         // Draw Bug Spray
 
-        //if (bs.getPosY() >= dk.getPosY() && bs.getPosY() <= dk.getPosY() + 50 && bs.getPosX() >= dk.getPosX() && bs.getPosX() <= dk.getPosX()) {
-
         if (bs.getPosY() >= dk.getPosY() && bs.getPosY() <= dk.getPosY() + 50 && bs.getPosX() >= dk.getPosX() && bs.getPosX() <= dk.getPosX() + 150) {
             System.out.println("HIT");
+            scoreIncrease(5);
             bs.forceSprayOff();
             dk.hit();
         }
         g2.drawImage(tool.getImage("sprites/smoke/" + bs.getAnim() + ".png"), bs.getPosX(), bs.getPosY(), bs.getSizeX(), bs.getSizeY(), this);
+
+        if (bs2.getPosY() >= dk.getPosY() && bs2.getPosY() <= dk.getPosY() + 50 && bs2.getPosX() >= dk.getPosX() && bs2.getPosX() <= dk.getPosX() + 150) {
+            System.out.println("HIT");
+            scoreIncrease(5);
+            bs2.forceSprayOff();
+            dk.hit();
+        }
+        g2.drawImage(tool.getImage("sprites/smoke/" + bs2.getAnim() + ".png"), bs2.getPosX(), bs2.getPosY(), bs2.getSizeX(), bs2.getSizeY(), this);
 
         // Score Display
         g2.setColor(Color.orange);
@@ -271,6 +285,8 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
         else if (event.getKeyCode() == KeyEvent.VK_S)
             down = false;
         if (event.getKeyCode() == KeyEvent.VK_SPACE) {
+            if (!bs2.getSpraying() && bs.getSpraying())
+                bs2.puff(playerX, playerY);
             if (!bs.getSpraying())
                 bs.puff(playerX, playerY);
         }
