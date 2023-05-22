@@ -331,16 +331,22 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
         if (marioWin)
             g2.drawString(Integer.toString(bonusScore) + " bonus points", 350, 500);
         
+        for (Enemy x : enemy) {
+            if (playerX >= x.getPosX() - 5 && playerX <= x.getPosX() + 5 && playerY >= x.getPosY() - 5 && playerY <= x.getPosY() + 5 )
+                death();
+        }
+        
         g2.dispose();
     }
 
     public void death() {
         lives--;
         mario.setDeath();
-        long timestamp = System.currentTimeMillis();
-        do {
-
-        } while (System.currentTimeMillis() < timestamp + 1000);
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
+        }
         if (lives > 0)
             restartLevel();
         else

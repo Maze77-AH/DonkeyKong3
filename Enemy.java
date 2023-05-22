@@ -1,5 +1,7 @@
 public class Enemy extends Mario {
 
+    // Enemy is a vital part of this game; moreso than Donkey Kong. Almost all recursion and inheritance is done in here
+
     public int variety;
     private int posX;
     private int posY;
@@ -134,10 +136,7 @@ public class Enemy extends Mario {
 
         if (!getDeath() && pursue && !goBack && !attacker) {
 
-            if (posY > 925) {
-                
-            }
-            else {
+            if (!(posY > 925)) {
                 posY += 5;
             }
             if (posY < 900) {
@@ -169,8 +168,6 @@ public class Enemy extends Mario {
         // Deal with X
 
         if (!getDeath() && pursue && !attacker) {
-
-            System.out.println(super.getPosX());
 
             if (posX > super.getPosX() + 150) {
                 posX -= 5;
