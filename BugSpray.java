@@ -1,11 +1,3 @@
-import java.awt.*;
-import javax.swing.*;
-import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.Random;
-import java.io.*;
-import java.io.IOException;
-
 public class BugSpray extends Mario {
     private boolean extreme;
     private boolean registerHit = false;
@@ -17,6 +9,7 @@ public class BugSpray extends Mario {
     private int currentAnim = 0;
     
     public BugSpray(boolean extreme) {
+        super();
         this.extreme = extreme;
         currentAnim = 0;
     }

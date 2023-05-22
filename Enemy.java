@@ -1,18 +1,39 @@
 public class Enemy extends DK {
 
-    public int aiLevel;
-    public int[] enemyVariety = new int[8];
+    public int variety;
     private int posX;
     private int posY;
     private int sizeX = 15;
     private int sizeY = 15;
     private int currentAnim = 6;
+    private boolean right;
 
-    public Enemy(int aiLevel) {
+    public Enemy(int variety) {
         super();
-        this.aiLevel = aiLevel;
-        for (int x = 0; x < enemyVariety.length; x++) {
-            enemyVariety[x] = (int) (Math.random() * 4);
+        this.variety = variety;
+        posY = 120;
+        if ((int)(Math.random() * 10) == 5) {
+            right = false;
+            posX = 200;
+        }
+        else {
+            right = true;
+            posX = 700;
+        }
+    }
+
+    public void move() {
+        if (posX > 220 && !right) {
+            posX -= 5;
+        }
+        if (posX > 190 && !right) {
+            posX += 5;
+        }
+        if (posX > 720 && right) {
+            posX -= 5;
+        }
+        if (posX > 690 && right) {
+            posX += 5;
         }
     }
 
@@ -22,6 +43,10 @@ public class Enemy extends DK {
         } else {
             return 1 + checkingSpace(index + 1, y);
         }
+    }
+
+    public int getVariety() {
+        return variety;
     }
 
     public int getAnim() {

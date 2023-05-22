@@ -27,12 +27,13 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
     private boolean decending = false;
     private boolean marioWin = false;
     private boolean exception = false;
+    private ArrayList<Enemy> enemy = new ArrayList<Enemy>(aiLevel);
+    public int[] enemyVariety = new int[8];
 
     private Mario mario = new Mario();
     private DK dk = new DK(level, aiLevel);
     private BugSpray bs = new BugSpray(false);
     private BugSpray bs2 = new BugSpray(false);
-    private Enemy enemy = new Enemy(aiLevel);
 
     public DonkeyKong3() {
         this(0, 0, 3, 1);
@@ -55,6 +56,7 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
         requestFocusInWindow();
         addKeyListener(this);
         setLevel(level);
+        setEnemy();
         setFPSandPaint();
         myFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         try {
@@ -63,6 +65,13 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
             e.printStackTrace();
         }
 
+    }
+
+    public void setEnemy() {
+        for (int x = 0; x < enemyVariety.length; x++) {
+            enemyVariety[x] = (int) (Math.random() * 4);
+            enemy.add(new Enemy(enemyVariety[x]));
+        }
     }
 
     public void setFPSandPaint() {
@@ -182,6 +191,9 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
                 if (bs2.getSpraying()) {
                     bs2.movement();
                 }
+                for(Enemy x : enemy) {
+                    x.move();
+                }
                 timer3 = 0;
             }
         }
@@ -275,8 +287,9 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
         g2.drawImage(tool.getImage("sprites/dk/" + dk.getAnim() + ".png"), dk.getPosX(), dk.getPosY(), dk.getSizeX(), dk.getSizeY(), this);
 
         // Draw Enemy
-
-        g2.drawImage(tool.getImage("sprites/smoke/" + enemy.getAnim() + ".png"), enemy.getPosX(), enemy.getPosY(), enemy.getSizeX(), enemy.getSizeY(), this);
+        for(Enemy x : enemy) {
+            g2.drawImage(tool.getImage("sprites/smoke/" + x.getAnim() + ".png"), x.getPosX(), x.getPosY(), x.getSizeX(), x.getSizeY(), this);
+        }
 
         // Draw Bug Spray
 

@@ -2,13 +2,10 @@ public class Mario {
     private int posX = 500;
     private int posY = 1000;
     private int perPixel = 4;
-    private int totalPlayerY = 0;
     private int currentAnim = 0;
-    private boolean death;
+    private boolean death = false;;
 
-    public Mario() {
-      death = false;
-    }
+    public Mario() {}
 
     public void move() {
       if (death == false) {
