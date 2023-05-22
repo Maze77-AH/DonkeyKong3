@@ -32,6 +32,7 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
     private DK dk = new DK(level, aiLevel);
     private BugSpray bs = new BugSpray(false);
     private BugSpray bs2 = new BugSpray(false);
+    private Enemy enemy = new Enemy(aiLevel);
 
     public DonkeyKong3() {
         this(0, 0, 3, 1);
@@ -271,8 +272,11 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
 
         // Draw Donkey Kong
 
-        g2.drawImage(tool.getImage("sprites/dk/" + dk.getAnim() + ".png"), dk.getPosX(), dk.getPosY(), dk.getSizeX(),
-                dk.getSizeY(), this);
+        g2.drawImage(tool.getImage("sprites/dk/" + dk.getAnim() + ".png"), dk.getPosX(), dk.getPosY(), dk.getSizeX(), dk.getSizeY(), this);
+
+        // Draw Enemy
+
+        g2.drawImage(tool.getImage("sprites/smoke/" + enemy.getAnim() + ".png"), enemy.getPosX(), enemy.getPosY(), enemy.getSizeX(), enemy.getSizeY(), this);
 
         // Draw Bug Spray
 

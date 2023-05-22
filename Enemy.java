@@ -1,17 +1,46 @@
-public class Enemy extends DonkeyKong3 {
-    public int rarity;
-    public int[] enemyVariety = new int[8] {0, 2, 4, 1, 2, 3, 1, 0};
+public class Enemy extends DK {
 
-    public Enemy(int rarity) {
-        this.rarity = rarity;
+    public int aiLevel;
+    public int[] enemyVariety = new int[8];
+    private int posX;
+    private int posY;
+    private int sizeX = 15;
+    private int sizeY = 15;
+    private int currentAnim = 6;
+
+    public Enemy(int aiLevel) {
+        super();
+        this.aiLevel = aiLevel;
+        for (int x = 0; x < enemyVariety.length; x++) {
+            enemyVariety[x] = (int) (Math.random() * 4);
+        }
     }
 
     public int checkingSpace(int index, int y) {
-        if (y == 75) {
+        if (y == 75 && !super.getDeath()) {
             return 0;
-        }
-        else {
+        } else {
             return 1 + checkingSpace(index + 1, y);
         }
+    }
+
+    public int getAnim() {
+        return currentAnim;
+    }
+
+    public int getPosX() {
+        return posX;
+    }
+
+    public int getPosY() {
+        return posY;
+    }
+
+    public int getSizeX() {
+        return sizeX;
+    }
+
+    public int getSizeY() {
+        return sizeY;
     }
 }

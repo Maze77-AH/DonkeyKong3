@@ -30,7 +30,7 @@ public class Mario {
     public void setMarioWin(int level) {
       death = false;
       if(level == 1) {
-
+        currentAnim = 5;
       }
       else {
         currentAnim = 5;

@@ -12,6 +12,8 @@ public class DK {
     private boolean marioDeath = false;
     private boolean marioWin = false;
 
+    public DK() {};
+
     public DK(int level, int aiLevel) {
         this.level = level;
         this.aiLevel = 5 + aiLevel;
