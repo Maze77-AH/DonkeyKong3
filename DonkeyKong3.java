@@ -166,8 +166,7 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
                 if (up && playerY > previousYLoc - 100 && decending) {
                     up = false;
                     decending = false;
-                }
-                else if (down && playerY < 860 && !decending) {
+                } else if (down && playerY < 860 && !decending) {
                     decending = true;
                 }
                 if (down && playerY > previousYLoc - 10 && decending && exception) {
@@ -191,7 +190,7 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
                 if (bs2.getSpraying()) {
                     bs2.movement();
                 }
-                for(Enemy x : enemy) {
+                for (Enemy x : enemy) {
                     x.move();
                 }
                 timer3 = 0;
@@ -284,11 +283,14 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
 
         // Draw Donkey Kong
 
-        g2.drawImage(tool.getImage("sprites/dk/" + dk.getAnim() + ".png"), dk.getPosX(), dk.getPosY(), dk.getSizeX(), dk.getSizeY(), this);
+        g2.drawImage(tool.getImage("sprites/dk/" + dk.getAnim() + ".png"), dk.getPosX(), dk.getPosY(), dk.getSizeX(),
+                dk.getSizeY(), this);
 
         // Draw Enemy
-        for(Enemy x : enemy) {
-            g2.drawImage(tool.getImage("sprites/smoke/" + x.getAnim() + ".png"), x.getPosX(), x.getPosY(), x.getSizeX(), x.getSizeY(), this);
+
+        for (Enemy x : enemy) {
+            g2.drawImage(tool.getImage("sprites/smoke/" + x.getAnim() + ".png"), x.getPosX(), x.getPosY(), x.getSizeX(),
+                    x.getSizeY(), this);
         }
 
         // Draw Bug Spray
@@ -323,8 +325,7 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
 
         mario.updatePosX(playerX);
         mario.updatePosY(playerY);
-
-        // g2.fillRect(dk.getPosX() + 50, dk.getPosY() + 100, 100, 50);
+        
         g2.dispose();
     }
 
@@ -345,22 +346,21 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
 
     public void keyPressed(KeyEvent event) {
         if (mario.getDeath() == false) {
-            if (event.getKeyCode() == KeyEvent.VK_A && !(playerX < 200)) {
+            if (event.getKeyCode() == KeyEvent.VK_A && !(playerX < 200) && !decending && !up && !down) {
                 mario.move();
                 left = true;
-            } else if (event.getKeyCode() == KeyEvent.VK_W && jumpCount < 25) {
-                if (!up) {
-                    up = true;
-                    previousYLoc = playerY;
-                }
-            } else if (event.getKeyCode() == KeyEvent.VK_D && !(playerX > 650)) {
+            }
+            if (event.getKeyCode() == KeyEvent.VK_W && jumpCount < 25 && !decending && !up && !down) {
+                up = true;
+                previousYLoc = playerY;
+            }
+            if (event.getKeyCode() == KeyEvent.VK_D && !(playerX > 650) && !decending && !up && !down) {
                 mario.move();
                 right = true;
-            } else if (event.getKeyCode() == KeyEvent.VK_S && playerY < 860) {
-                if (!down) {
-                    down = true;
-                    previousYLoc = playerY;
-                }
+            }
+            if (event.getKeyCode() == KeyEvent.VK_S && playerY < 860 && !decending && !up && !down) {
+                down = true;
+                previousYLoc = playerY;
             }
         }
     }

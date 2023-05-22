@@ -23,13 +23,25 @@ public class BugSpray extends Mario {
     }
 
     public void animSet(int dkPosX, int dkPosY) {
-        if (currentAnim < 7) {
-            currentAnim++;
+        if (!extreme) {
+            if (currentAnim < 7) {
+                currentAnim++;
+            }
+            else {
+                currentAnim = 8;
+                spraying = false;
+                currentAnim = 0;
+            }
         }
         else {
-            currentAnim = 8;
-            spraying = false;
-            currentAnim = 0;
+            if (currentAnim < 17) {
+                currentAnim++;
+            }
+            else {
+                currentAnim = 18;
+                spraying = false;
+                currentAnim = 0;
+            }
         }
     }
     
