@@ -48,7 +48,7 @@ public class Mario {
     }
 
     public boolean getDeath() {
-        return death;
+      return death;
     }
 
     public int getPosX() {

@@ -48,7 +48,7 @@ public class BugSpray extends Mario {
     public void movement() {
         if (spraying) {
             if(extreme)
-                this.posY -= 35;
+                this.posY -= 40;
             else 
                 this.posY -= 30;
         }

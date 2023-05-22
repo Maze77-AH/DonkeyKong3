@@ -1,17 +1,18 @@
-public class Enemy extends DK {
+public class Enemy extends Mario {
 
     public int variety;
     private int posX;
     private int posY;
     private int sizeX = 15;
     private int sizeY = 15;
-    private int currentAnim = 6;
-    private boolean pursue;
+    private int currentAnim = 0 + variety + 1;
+    private boolean goBack = false;
+    private boolean pursue = false;
+    private boolean attacker = false;
     private boolean right;
 
     public Enemy(int variety) {
         super();
-        pursue = false;
         this.variety = variety;
         posY = 120;
         if ((int)(Math.random() * 10) > 5) {
@@ -25,7 +26,7 @@ public class Enemy extends DK {
     }
 
     public void move() {
-        if (!getDeath()) {
+        if (!getDeath() && !attacker) {
             if (currentAnim < 2 + variety + 1) {
                 currentAnim += 1 + variety + 1;
             }
@@ -33,7 +34,7 @@ public class Enemy extends DK {
                 currentAnim = 0;
             }
         }
-        if (!getDeath() && !pursue) {
+        if (!getDeath() && !pursue && !attacker) {
             // Deal with X
             if (posX > 220 && !right && !pursue) {
                 posX -= 5;
@@ -107,41 +108,94 @@ public class Enemy extends DK {
 
             // Recurssion Method named checkingSpace
             if (checkingSpace(0, (int)(Math.random() * 1000)) == (int)(Math.random() * 1000)) {
-                pursue();
+                pursue = true;
             }
         }
 
-        if (!getDeath() && pursue) {
-            // Deal with Y
+        // Transfer Bees Nests
 
-            if (posY > 220 && !pursue) {
+        if (!getDeath() && pursue && (int)(Math.random() * 10) == 5 ) {
+
+            if (posY > 900) {
                 posY -= 5;
             }
             else {
-                if ((int)(Math.random() * 10) > 5) {
-                    posY += 5;
-                }
-                else {
-                    posY -= 5;
-                }
+                posY += 5;
             }
-            if (posY < 125 && !pursue) {
+            if (posY < 100) {
                 posY += 5;
             }
             else {
+                posY -= 5;
+            }
+        }
+
+        // Deal with Y pursue
+
+        if (!getDeath() && pursue && !goBack && !attacker) {
+
+            if (posY > 925) {
+                
+            }
+            else {
+                posY += 5;
+            }
+            if (posY < 900) {
+                posY += 5;
+            }
+            else {
+                posY -= 5;
+            }
+            if (posY >= 899) {
+                goBack = true;
+            }
+        }
+        if (goBack && pursue && !attacker) {
+            if (posY >= 50) {
+                posY -= 3;
                 if ((int)(Math.random() * 10) > 5) {
-                    posY += 5;
+                    posX += 5;
                 }
                 else {
-                    posY -= 5;
+                    posX -= 5;
                 }
+            }
+            else {
+                goBack = false;
+                attacker = true;
+            }
+        }
+
+        // Deal with X
+
+        if (!getDeath() && pursue && !attacker) {
+
+            System.out.println(super.getPosX());
+
+            if (posX > super.getPosX() + 150) {
+                posX -= 5;
+            }
+            else {
+                posX += 5;
+            }
+            if (posY < super.getPosX() - 150) {
+                posX += 5;
+            }
+            else {
+                posX -= 5;
+            }
+        }
+
+        if (attacker) {
+            if ((int)(Math.random() * 100) < 50) {
+                flyAttack();
             }
         }
     }
 
-    public void pursue() {
-        System.out.println("PURSUE");
-        pursue = true;
+    public void flyAttack() {
+        posX = super.getPosX();
+        posY += 70;
     }
 
     public int checkingSpace(int index, int y) {

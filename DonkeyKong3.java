@@ -198,6 +198,8 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
         }
     }
 
+    // Reads high score from file
+
     public void setHighScore() throws IOException {
         int ch;
         FileReader fr = null;
@@ -243,6 +245,8 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
         }
     }
 
+    // Level restart in-case of death
+
     public void restartLevel() {
         repaint();
         try {
@@ -260,10 +264,14 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
 
     public void update() {
         if (mario.getDeath() == false) {
-            if (left && !(playerX < 200))
+            mario.updatePosX(playerX);
+            mario.updatePosY(playerY);
+            if (left && !(playerX < 200)) {
                 playerX -= perPixel;
-            else if (right && !(playerX > 650))
+            }
+            else if (right && !(playerX > 650)) {
                 playerX += perPixel;
+            }
         }
     }
 
@@ -322,9 +330,6 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
 
         if (marioWin)
             g2.drawString(Integer.toString(bonusScore) + " bonus points", 350, 500);
-
-        mario.updatePosX(playerX);
-        mario.updatePosY(playerY);
         
         g2.dispose();
     }
