@@ -29,10 +29,17 @@ public class Enemy extends Mario {
 
     public void move() {
         if (!getDeath() && !attacker) {
-            if (currentAnim <= variety) {
-                currentAnim += 1;
+            if (currentAnim != variety + 1) {
+                currentAnim++;
             } else {
                 currentAnim = variety;
+            }
+        }
+        if (!getDeath() && attacker) {
+            if (currentAnim < 7) {
+                currentAnim++;
+            } else {
+                currentAnim = 6;
             }
         }
         if (!getDeath() && !pursue && !attacker) {

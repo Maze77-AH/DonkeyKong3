@@ -13,16 +13,17 @@ public class DK {
     private boolean marioWin = false;
     private boolean barrel = false;
 
-    public DK() {
+    public void setLevelandAI(int level, int aiLevel) {
+        this.level = level;
+        this.aiLevel = 5 + aiLevel;
         if (this.level == 0) {
             posX = 348;
             posY = 270;
         }
-    }
-
-    public void setLevelandAI(int level, int aiLevel) {
-        this.level = level;
-        this.aiLevel = 5 + aiLevel;
+        if (this.level == 1) {
+            posX = 355;
+            posY = 270;
+        }
     }
 
     public void move(int posXMario, int posYMario) {
