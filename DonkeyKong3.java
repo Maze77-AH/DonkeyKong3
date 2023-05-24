@@ -279,8 +279,22 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
 
     public int scoreIncrease(int score) {
         this.currentScore += score;
-        if (this.currentScore > highScores)
+        if (this.currentScore > highScores) {
             this.highScores = currentScore;
+            Writer writer = null;
+
+            try {
+                writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("highscore.txt"), "utf-8"));
+                writer.write(Integer.toString(highScores));
+            } catch (IOException ex) {
+
+            } finally {
+                try {
+                    writer.close();
+                } catch (Exception ex) {
+                }
+            }
+        }
         return currentScore;
     }
 

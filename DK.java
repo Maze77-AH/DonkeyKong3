@@ -21,7 +21,7 @@ public class DK {
             posY = 270;
         }
         if (this.level == 1) {
-            posX = 355;
+            posX = 356;
             posY = 270;
         }
     }
