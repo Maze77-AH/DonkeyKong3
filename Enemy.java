@@ -7,7 +7,7 @@ public class Enemy extends Mario {
     private int posY;
     private int sizeX = 15;
     private int sizeY = 15;
-    private int currentAnim = 0 + variety + 1;
+    private int currentAnim = variety;
     private boolean goBack = false;
     private boolean pursue = false;
     private boolean attacker = false;
@@ -17,11 +17,10 @@ public class Enemy extends Mario {
         super();
         this.variety = variety;
         posY = 120;
-        if ((int)(Math.random() * 10) > 5) {
+        if ((int) (Math.random() * 10) > 5) {
             right = false;
             posX = 200;
-        }
-        else {
+        } else {
             right = true;
             posX = 700;
         }
@@ -29,56 +28,47 @@ public class Enemy extends Mario {
 
     public void move() {
         if (!getDeath() && !attacker) {
-            if (currentAnim < 2 + variety + 1) {
-                currentAnim += 1 + variety + 1;
-            }
-            else {
-                currentAnim = 0;
+            if (currentAnim < variety + 1) {
+                currentAnim += 1;
+            } else {
+                currentAnim = variety;
             }
         }
         if (!getDeath() && !pursue && !attacker) {
             // Deal with X
             if (posX > 220 && !right && !pursue) {
                 posX -= 5;
-            }
-            else {
-                if ((int)(Math.random() * 10) > 5) {
+            } else {
+                if ((int) (Math.random() * 10) > 5) {
                     posX += 5;
-                }
-                else {
+                } else {
                     posX -= 5;
                 }
             }
             if (posX < 190 && !right && !pursue) {
                 posX += 5;
-            }
-            else {
-                if ((int)(Math.random() * 10) > 5) {
+            } else {
+                if ((int) (Math.random() * 10) > 5) {
                     posX += 5;
-                }
-                else {
+                } else {
                     posX -= 5;
                 }
             }
             if (posX > 720 && right && !pursue) {
                 posX -= 5;
-            }
-            else {
-                if ((int)(Math.random() * 10) > 5) {
+            } else {
+                if ((int) (Math.random() * 10) > 5) {
                     posX += 5;
-                }
-                else {
+                } else {
                     posX -= 5;
                 }
             }
             if (posX < 690 && right && !pursue) {
                 posX += 5;
-            }
-            else {
-                if ((int)(Math.random() * 10) > 5) {
+            } else {
+                if ((int) (Math.random() * 10) > 5) {
                     posX += 5;
-                }
-                else {
+                } else {
                     posX -= 5;
                 }
             }
@@ -87,47 +77,43 @@ public class Enemy extends Mario {
 
             if (posY > 220 && !pursue) {
                 posY -= 5;
-            }
-            else {
-                if ((int)(Math.random() * 10) > 5) {
+            } else {
+                if ((int) (Math.random() * 10) > 5) {
                     posY += 5;
-                }
-                else {
+                } else {
                     posY -= 5;
                 }
             }
             if (posY < 125 && !pursue) {
                 posY += 5;
-            }
-            else {
-                if ((int)(Math.random() * 10) > 5) {
+            } else {
+                if ((int) (Math.random() * 10) > 5) {
                     posY += 5;
-                }
-                else {
+                } else {
                     posY -= 5;
                 }
             }
 
             // Recurssion Method named checkingSpace
-            if (checkingSpace(0, (int)(Math.random() * 1000)) == (int)(Math.random() * 1000)) {
+            if (checkingSpace(0, (int) (Math.random() * 1000)) == (int) (Math.random() * 1000)) {
                 pursue = true;
+                sizeX = 50;
+                sizeY = 50;
             }
         }
 
         // Transfer Bees Nests
 
-        if (!getDeath() && pursue && (int)(Math.random() * 10) == 5 ) {
+        if (!getDeath() && pursue && (int) (Math.random() * 10) == 5) {
 
             if (posY > 900) {
                 posY -= 5;
-            }
-            else {
+            } else {
                 posY += 5;
             }
             if (posY < 100) {
                 posY += 5;
-            }
-            else {
+            } else {
                 posY -= 5;
             }
         }
@@ -141,8 +127,7 @@ public class Enemy extends Mario {
             }
             if (posY < 900) {
                 posY += 5;
-            }
-            else {
+            } else {
                 posY -= 5;
             }
             if (posY >= 899) {
@@ -152,14 +137,12 @@ public class Enemy extends Mario {
         if (goBack && pursue && !attacker) {
             if (posY >= 50) {
                 posY -= 3;
-                if ((int)(Math.random() * 10) > 5) {
+                if ((int) (Math.random() * 10) > 5) {
                     posX += 5;
-                }
-                else {
+                } else {
                     posX -= 5;
                 }
-            }
-            else {
+            } else {
                 goBack = false;
                 attacker = true;
             }
@@ -171,22 +154,25 @@ public class Enemy extends Mario {
 
             if (posX > super.getPosX() + 150) {
                 posX -= 5;
-            }
-            else {
+            } else {
                 posX += 5;
             }
             if (posY < super.getPosX() - 150) {
                 posX += 5;
-            }
-            else {
+            } else {
                 posX -= 5;
             }
         }
 
         if (attacker) {
-            if ((int)(Math.random() * 100) < 50) {
+            if ((int) (Math.random() * 100) < 50) {
                 flyAttack();
             }
+        }
+
+        if (!pursue) {
+            sizeX = 15;
+            sizeY = 15;
         }
     }
 
@@ -201,6 +187,10 @@ public class Enemy extends Mario {
         } else {
             return 1 + checkingSpace(index + 1, y);
         }
+    }
+
+    public boolean getPursue() {
+        return pursue;
     }
 
     public int getVariety() {

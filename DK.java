@@ -11,6 +11,7 @@ public class DK {
     private boolean stopHarm = false;
     private boolean marioDeath = false;
     private boolean marioWin = false;
+    private boolean barrel = false;
 
     public DK() {};
 
@@ -47,7 +48,10 @@ public class DK {
                     currentAnim = 6;
             }
             if ((int)(Math.random() * 5) == 2) {
-                whackBugs();
+                if (level == 0)
+                    whackBugs();
+                else
+                    throwBarrel();
             }
         }
     }
@@ -70,11 +74,36 @@ public class DK {
         }
     }
 
+    public void throwBarrel() {
+        if (!marioWin) {
+            if (globalCount == 0) {
+                stopHarm = true;
+                currentAnim = 2;
+                barrel = true;
+            }
+            if (globalCount == 1) {
+                stopHarm = true;
+                currentAnim = 12;
+                barrel = false;
+            }
+            if (globalCount == 2) {
+                stopHarm = false;
+                currentAnim = 6;
+                barrel = false;
+            }
+            globalCount++;
+        }
+    }
+
     public void hit() {
         if (!stopHarm || !marioWin && !stopHarm) {
             currentAnim = 5;
             posY -= 10;
         }
+    }
+
+    public boolean getBarrel() {
+        return barrel;
     }
 
     public boolean getDeath() {

@@ -34,6 +34,7 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
     private DK dk = new DK(level, aiLevel);
     private BugSpray bs = new BugSpray(false);
     private BugSpray bs2 = new BugSpray(false);
+    private Barrel dkB = new Barrel();
 
     public DonkeyKong3() {
         this(0, 0, 3, 1);
@@ -145,53 +146,105 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
                 delta3--;
             }
             if (timer3 >= 40000000) {
-                if (up && playerY > previousYLoc - 120 && !decending && jumpCount < 24) {
-                    playerY -= 15;
-                    jumpCount++;
+                if (level == 0) {
+                    if (up && playerY > previousYLoc - 120 && !decending && jumpCount < 24) {
+                        playerY -= 15;
+                        jumpCount++;
+                    }
+                    if (up && playerY > previousYLoc - 120 && !decending && jumpCount < 32 && jumpCount >= 24) {
+                        playerY -= 15;
+                        jumpCount++;
+                    }
+                    if (jumpCount == 32) {
+                        exception = true;
+                        down = true;
+                    }
+                    if (up && playerY == previousYLoc - 120 && !decending && !exception) {
+                        decending = true;
+                    }
+                    if (decending) {
+                        playerY += 15;
+                    }
+                    if (up && playerY > previousYLoc - 100 && decending) {
+                        up = false;
+                        decending = false;
+                    } else if (down && playerY < 860 && !decending) {
+                        decending = true;
+                    }
+                    if (down && playerY > previousYLoc - 10 && decending && exception) {
+                        down = false;
+                        up = false;
+                        decending = false;
+                        exception = false;
+                        if (jumpCount >= 0)
+                            jumpCount -= 8;
+                    }
+                    if (down && playerY > previousYLoc + 80 && decending) {
+                        down = false;
+                        decending = false;
+                        exception = false;
+                        if (jumpCount >= 0)
+                            jumpCount -= 8;
+                    }
+                    if (bs.getSpraying()) {
+                        bs.movement();
+                    }
+                    if (bs2.getSpraying()) {
+                        bs2.movement();
+                    }
+                    for (Enemy x : enemy) {
+                        x.move();
+                    }
                 }
-                if (up && playerY > previousYLoc - 120 && !decending && jumpCount < 32 && jumpCount >= 24) {
-                    playerY -= 15;
-                    jumpCount++;
-                }
-                if (jumpCount == 32) {
-                    exception = true;
-                    down = true;
-                }
-                if (up && playerY == previousYLoc - 120 && !decending && !exception) {
-                    decending = true;
-                }
-                if (decending) {
-                    playerY += 15;
-                }
-                if (up && playerY > previousYLoc - 100 && decending) {
-                    up = false;
-                    decending = false;
-                } else if (down && playerY < 860 && !decending) {
-                    decending = true;
-                }
-                if (down && playerY > previousYLoc - 10 && decending && exception) {
-                    down = false;
-                    up = false;
-                    decending = false;
-                    exception = false;
-                    if (jumpCount >= 0)
-                        jumpCount -= 8;
-                }
-                if (down && playerY > previousYLoc + 80 && decending) {
-                    down = false;
-                    decending = false;
-                    exception = false;
-                    if (jumpCount >= 0)
-                        jumpCount -= 8;
-                }
-                if (bs.getSpraying()) {
-                    bs.movement();
-                }
-                if (bs2.getSpraying()) {
-                    bs2.movement();
-                }
-                for (Enemy x : enemy) {
-                    x.move();
+                else {
+                    if (up && playerY > previousYLoc - 120 && !decending && jumpCount < 16) {
+                        playerY -= 15;
+                        jumpCount++;
+                    }
+                    if (up && playerY > previousYLoc - 120 && !decending && jumpCount < 24 && jumpCount >= 16) {
+                        playerY -= 15;
+                        jumpCount++;
+                    }
+                    if (jumpCount == 24) {
+                        exception = true;
+                        down = true;
+                    }
+                    if (up && playerY == previousYLoc - 120 && !decending && !exception) {
+                        decending = true;
+                    }
+                    if (decending) {
+                        playerY += 15;
+                    }
+                    if (up && playerY > previousYLoc - 100 && decending) {
+                        up = false;
+                        decending = false;
+                    } else if (down && playerY < 860 && !decending) {
+                        decending = true;
+                    }
+                    if (down && playerY > previousYLoc - 10 && decending && exception) {
+                        down = false;
+                        up = false;
+                        decending = false;
+                        exception = false;
+                        if (jumpCount >= 0)
+                            jumpCount -= 8;
+                    }
+                    if (down && playerY > previousYLoc + 80 && decending) {
+                        down = false;
+                        decending = false;
+                        exception = false;
+                        if (jumpCount >= 0)
+                            jumpCount -= 8;
+                    }
+                    if (bs.getSpraying()) {
+                        bs.movement();
+                    }
+                    if (bs2.getSpraying()) {
+                        bs2.movement();
+                    }
+                    for (Enemy x : enemy) {
+                        x.move();
+                    }
                 }
                 timer3 = 0;
             }
@@ -234,12 +287,12 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
         } catch (InterruptedException ex) {
             ex.printStackTrace();
         }
-        new DonkeyKong3(currentScore + 100, level + 1, lives, aiLevel + 1);
+        new DonkeyKong3(currentScore + bonusScore + bonusTime, level + 1, lives, aiLevel + 1);
         myFrame.dispatchEvent(new WindowEvent(myFrame, WindowEvent.WINDOW_CLOSING));
     }
 
     public void setLevel(int level) {
-        if (level > 3) {
+        if (level > 1) {
             new DonkeyKong3(currentScore, 0, lives, aiLevel);
             myFrame.dispatchEvent(new WindowEvent(myFrame, WindowEvent.WINDOW_CLOSING));
         }
@@ -294,10 +347,10 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
         g2.drawImage(tool.getImage("sprites/dk/" + dk.getAnim() + ".png"), dk.getPosX(), dk.getPosY(), dk.getSizeX(),
                 dk.getSizeY(), this);
 
-        // Draw Enemy
+        // Draw Enemy (bugs)
 
         for (Enemy x : enemy) {
-            g2.drawImage(tool.getImage("sprites/smoke/" + x.getAnim() + ".png"), x.getPosX(), x.getPosY(), x.getSizeX(),
+            g2.drawImage(tool.getImage("sprites/bugs/" + x.getAnim() + ".png"), x.getPosX(), x.getPosY(), x.getSizeX(),
                     x.getSizeY(), this);
         }
 
@@ -332,9 +385,28 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
             g2.drawString(Integer.toString(bonusScore) + " bonus points", 350, 500);
         
         for (Enemy x : enemy) {
-            if (playerX >= x.getPosX() - 5 && playerX <= x.getPosX() + 5 && playerY >= x.getPosY() - 5 && playerY <= x.getPosY() + 5 )
+            if (playerX >= x.getPosX() - 15 && playerX <= x.getPosX() + 15 && playerY >= x.getPosY() - 15 && playerY <= x.getPosY() + 15 )
                 death();
         }
+
+        for (int x = 0; x < enemy.size(); x++) {
+            if (enemy.get(x).getPursue() && bs.getPosX() >= enemy.get(x).getPosX() - 50 && bs.getPosX() <= enemy.get(x).getPosX() + 50 && bs.getPosY() >= enemy.get(x).getPosY() - 50 && bs.getPosY() <= enemy.get(x).getPosY() + 50) {
+                enemy.remove(x);
+                bs.forceSprayOff();
+            }
+        }
+
+        for (int x = 0; x < enemy.size(); x++) {
+            if (enemy.get(x).getPursue() && bs2.getPosX() >= enemy.get(x).getPosX() - 50 && bs2.getPosX() <= enemy.get(x).getPosX() + 50 && bs2.getPosY() >= enemy.get(x).getPosY() - 50 && bs2.getPosY() <= enemy.get(x).getPosY() + 50) {
+                enemy.remove(x);
+                bs2.forceSprayOff();
+            }
+        }
+
+        if (dk.getBarrel() && !dkB.getThrown()) {
+            dkB.thrown();
+        }
+            
         
         g2.dispose();
     }
