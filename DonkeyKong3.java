@@ -65,17 +65,17 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
         myFrame.setFocusable(true);
         myFrame.add(this);
         myFrame.setVisible(true);
+        myFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         requestFocusInWindow();
         addKeyListener(this);
         setLevel(level);
         setEnemy();
-        setFPSandPaint();
-        myFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         try {
             setHighScore();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        setFPSandPaint();
 
     }
 
@@ -274,12 +274,14 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
             fr = new FileReader("highscore.txt");
         } catch (FileNotFoundException fe) {
             System.out.println("File not found");
+            debugConsole.add("File not found");
         }
         String get = "";
         while ((ch = fr.read()) != -1) {
             get += ((char) ch);
             highScores = Integer.parseInt(get);
         }
+        debugConsole.add("File found");
         fr.close();
 
     }
@@ -391,11 +393,11 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
                     x.getSizeY(), this);
         }
 
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         // Draw Bug Spray
         if (bs.getPosY() >= dk.getPosY() && bs.getPosY() <= dk.getPosY() + 50 && bs.getPosX() >= dk.getPosX()
                 && bs.getPosX() <= dk.getPosX() + 150) {
-            System.out.println("HIT");
-            debugConsole.add("HIT (1)");
+            debugConsole.add(sdf.format(timestamp) + " HIT (1)");
             bs.forceSprayOff();
             dk.hit();
         }
@@ -404,8 +406,7 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
 
         if (bs2.getPosY() >= dk.getPosY() && bs2.getPosY() <= dk.getPosY() + 50 && bs2.getPosX() >= dk.getPosX()
                 && bs2.getPosX() <= dk.getPosX() + 150) {
-            System.out.println("HIT2");
-            debugConsole.add("HIT (2)");
+            debugConsole.add(sdf.format(timestamp) + " HIT (2)");
             bs2.forceSprayOff();
             dk.hit();
         }
@@ -473,13 +474,17 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
 
         if (debug) {
             int PositionConsoleY = 0;
-            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
            
             g2.drawString(String.format("GAME.fps: (%d)", fpsCounter), 10, 60);
             g2.drawString(String.format("GAME.entities: (%d)", enemy.size() + 2), 10, 80);
             g2.drawString(String.format("MARIO.lives: (%d)", lives), 10, 100);
 
             g2.drawRect(0, 600, 350, 350);
+            Color transParent = new Color(0f,0f,0f,.5f);
+            g2.setColor(transParent);
+            g2.fillRect(0, 600, 350, 350);
+
+            g2.setColor(Color.white);
 
             for (int items = 0; items < debugConsole.size(); items ++) {
                 String item = debugConsole.get(items);
@@ -487,7 +492,7 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
                 if (items == 17) debugConsole.remove(0);
                 else PositionConsoleY+=20;
 
-                g2.drawString(String.format("[%s] %s", sdf.format(timestamp), item), 10, PositionConsoleY + 605);
+                g2.drawString(item, 10, PositionConsoleY + 605);
             }
         }
             
