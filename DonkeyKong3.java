@@ -66,7 +66,6 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
         myFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         requestFocusInWindow();
         addKeyListener(this);
-        setLevel(level);
         setEnemy();
         try {
             setHighScore();
@@ -74,6 +73,7 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
             e.printStackTrace();
         }
         scoreIncrease(score);
+        setLevel(level);
         setFPSandPaint();
 
     }
