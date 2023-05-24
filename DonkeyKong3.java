@@ -27,11 +27,12 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
     private boolean decending = false;
     private boolean marioWin = false;
     private boolean exception = false;
+    private boolean death = false;
     private ArrayList<Enemy> enemy = new ArrayList<Enemy>(aiLevel);
     public int[] enemyVariety = new int[8];
 
+    private DK dk = new DK();
     private Mario mario = new Mario();
-    private DK dk = new DK(level, aiLevel);
     private BugSpray bs = new BugSpray(false);
     private BugSpray bs2 = new BugSpray(false);
     private Barrel dkB = new Barrel();
@@ -44,6 +45,7 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
         this.lives = lives;
         this.aiLevel = aiLevel;
         this.level = level;
+        dk.setLevelandAI(level, aiLevel);
         scoreIncrease(score);
         myFrame = new JFrame("Donkey Kong 3");
         myFrame.setSize(windowWidth, windowHeight);
@@ -119,7 +121,7 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
                 System.out.println("FPS " + drawCount);
                 if (dk.getMarioWin())
                     marioWinSetLevel(level);
-                else if (bonusTime <= 0 || dk.getDeath())
+                else if (bonusTime <= 0 || dk.getDeath() || death)
                     death();
                 else {
                     dk.move(playerX, playerY);
@@ -245,6 +247,8 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
                     for (Enemy x : enemy) {
                         x.move();
                     }
+                    if (dkB.getThrown())
+                        dkB.move();
                 }
                 timer3 = 0;
             }
@@ -385,8 +389,8 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
             g2.drawString(Integer.toString(bonusScore) + " bonus points", 350, 500);
         
         for (Enemy x : enemy) {
-            if (playerX >= x.getPosX() - 15 && playerX <= x.getPosX() + 15 && playerY >= x.getPosY() - 15 && playerY <= x.getPosY() + 15 )
-                death();
+            if (playerX >= x.getPosX() - 15 && playerX <= x.getPosX() + 15 && playerY >= x.getPosY() - 15 && playerY <= x.getPosY() + 15 && !death)
+                death = true;
         }
 
         for (int x = 0; x < enemy.size(); x++) {
@@ -404,10 +408,16 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
         }
 
         if (dk.getBarrel() && !dkB.getThrown()) {
-            dkB.thrown();
+            dkB.thrown(dk.getPosX(), dk.getPosY());
         }
-            
-        
+
+        if (dkB.getThrown()) {
+            g2.drawImage(tool.getImage("sprites/barrel/0.png"), dkB.getPosX(), dkB.getPosY(), dkB.getSizeX(), dkB.getSizeY(), this);
+        }
+
+        if (playerX >= dkB.getPosX() - 50 && playerX <= dkB.getPosX() + 50 && playerY >= dkB.getPosY() - 50 && playerY <= dkB.getPosY() + 50 && !death)
+            death = true;
+
         g2.dispose();
     }
 

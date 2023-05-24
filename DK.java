@@ -13,23 +13,26 @@ public class DK {
     private boolean marioWin = false;
     private boolean barrel = false;
 
-    public DK() {};
-
-    public DK(int level, int aiLevel) {
-        this.level = level;
-        this.aiLevel = 5 + aiLevel;
+    public DK() {
         if (this.level == 0) {
             posX = 348;
             posY = 270;
         }
     }
 
+    public void setLevelandAI(int level, int aiLevel) {
+        this.level = level;
+        this.aiLevel = 5 + aiLevel;
+    }
+
     public void move(int posXMario, int posYMario) {
-        if (stopHarm && globalCount < 3)
+        if (stopHarm && globalCount < 3 && level == 0)
             whackBugs();
+        if (stopHarm && globalCount < 3 && level == 1)
+            throwBarrel();
         if (!stopHarm) {
             globalCount = 0;
-            if (posY <= 50) {
+            if (posY <= 50 && level == 0 || posY <= 110 && level == 1) {
                 marioWin = true;
                 currentAnim = 5;
             } else if (posY >= 350) {
@@ -78,13 +81,13 @@ public class DK {
         if (!marioWin) {
             if (globalCount == 0) {
                 stopHarm = true;
-                currentAnim = 2;
-                barrel = true;
+                currentAnim = 7;
+                barrel = false;
             }
             if (globalCount == 1) {
                 stopHarm = true;
                 currentAnim = 12;
-                barrel = false;
+                barrel = true;
             }
             if (globalCount == 2) {
                 stopHarm = false;

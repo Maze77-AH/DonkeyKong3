@@ -12,6 +12,7 @@ public class Enemy extends Mario {
     private boolean pursue = false;
     private boolean attacker = false;
     private boolean right;
+    public boolean death = false;
 
     public Enemy(int variety) {
         super();
@@ -28,7 +29,7 @@ public class Enemy extends Mario {
 
     public void move() {
         if (!getDeath() && !attacker) {
-            if (currentAnim < variety + 1) {
+            if (currentAnim <= variety) {
                 currentAnim += 1;
             } else {
                 currentAnim = variety;
@@ -187,6 +188,10 @@ public class Enemy extends Mario {
         } else {
             return 1 + checkingSpace(index + 1, y);
         }
+    }
+
+    public boolean getDeath() {
+        return death;
     }
 
     public boolean getPursue() {
