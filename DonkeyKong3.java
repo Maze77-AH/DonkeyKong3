@@ -411,6 +411,12 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
         g2.drawImage(tool.getImage("sprites/smoke/" + bs2.getAnim() + ".png"), bs2.getPosX(), bs2.getPosY(),
                 bs2.getSizeX(), bs2.getSizeY(), this);
 
+        try {
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("fonts/Monocraft.ttf")));
+        } catch (IOException|FontFormatException e) { 
+            debugConsole.add("Font not loaded");
+        }
         // Score Display
         g2.setFont(new Font("Monocraft", Font.BOLD, 40));
         g2.setColor(Color.cyan);
