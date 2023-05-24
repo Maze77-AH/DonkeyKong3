@@ -54,7 +54,6 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
         this.aiLevel = aiLevel;
         this.level = level;
         dk.setLevelandAI(level, aiLevel);
-        scoreIncrease(score);
         myFrame = new JFrame("Donkey Kong 3");
         myFrame.setSize(windowWidth, windowHeight);
         myFrame.setAlwaysOnTop(false);
@@ -74,6 +73,7 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        scoreIncrease(score);
         setFPSandPaint();
 
     }
