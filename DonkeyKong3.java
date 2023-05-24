@@ -35,6 +35,7 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
     private boolean stubbed = false;
     private boolean death = false;
     private ArrayList<Enemy> enemy = new ArrayList<Enemy>(aiLevel);
+    private ArrayList<Flower> flowers = new ArrayList<Flower>();
     private ArrayList<String> debugConsole = new ArrayList<String>();
     private int[] enemyVariety = new int[8];
     private static final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
@@ -66,7 +67,7 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
         myFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         requestFocusInWindow();
         addKeyListener(this);
-        setEnemy();
+        setEnemyandFlowers();
         try {
             setHighScore();
         } catch (IOException e) {
@@ -78,10 +79,13 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
 
     }
 
-    public void setEnemy() {
+    public void setEnemyandFlowers() {
         for (int x = 0; x < enemyVariety.length; x++) {
             enemyVariety[x] = (int) (Math.random() * 4);
             enemy.add(new Enemy(enemyVariety[x]));
+        }
+        for (int x = 0; x < 5; x++) {
+            flowers.add(new Flower());
         }
     }
 
@@ -156,6 +160,26 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
                 delta3--;
             }
             if (timer3 >= 40000000) {
+                if (!death) {
+                    for (int x = 0; x < enemy.size(); x++) {
+                        for (int y = 0; y < flowers.size(); y++) {
+                            if (enemy.get(x).getPursue() && flowers.get(y).getPosX() >= enemy.get(x).getPosX() - 50
+                                    && flowers.get(y).getPosX() <= enemy.get(x).getPosX() + 50 && flowers.get(y).getPosY() >= enemy.get(x).getPosY() - 50
+                                    && flowers.get(y).getPosY() <= enemy.get(x).getPosY() + 50) {
+                                        flowers.get(y).draggedAway(enemy.get(x).getPosX(), enemy.get(x).getPosY());
+                            }
+                            // else if (flowers.get(y).getDragged() && enemy.get(x).getPursue() && flowers.get(y).getPosX() >= enemy.get(x).getPosX() - 50
+                            // && flowers.get(y).getPosX() <= enemy.get(x).getPosX() + 50 && flowers.get(y).getPosY() >= enemy.get(x).getPosY() - 50
+                            // && flowers.get(y).getPosY() <= enemy.get(x).getPosY() + 50) {
+                            //     flowers.get(y).dropped();
+                            // }
+                            if (flowers.get(y).getPosY() <= 75) {
+                                flowers.remove(y);
+                                bonusScore -= 100;
+                            }
+                        }
+                    }
+                }
                 if (level == 0) {
                     if (up && playerY > previousYLoc - 120 && !decending && jumpCount < 24) {
                         playerY -= 15;
@@ -469,6 +493,16 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
         for (int x = 0; x < lives; x++) {
             g2.drawImage(tool.getImage("sprites/misc/Lives.png"), count, 950, 30, 40, this);
             count += 50;
+        }
+
+        int count2 = 200;
+        for (Flower f : flowers) {
+            f.setPosX(count2);
+            count2 += 150;
+        }
+
+        for (Flower f : flowers) {
+            g2.drawImage(tool.getImage("sprites/misc/Flower.png"), f.getPosX(), f.getPosY(), f.getSizeX(), f.getSizeY(), this);
         }
 
         if (dk.getBarrel() && !dkB.getThrown()) {
