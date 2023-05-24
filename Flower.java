@@ -4,13 +4,14 @@ public class Flower {
     private int sizeX = 55;
     private int sizeY = 55;
     private boolean dragging = false;
+    private boolean dropping = false;
 
     public void draggedAway(int posX, int posY) {
         this.posX = posX;
-        this.posY -= 15;
+        this.posY = posY;
         dragging = true;
-        if (posY < 75) {
-            posY = -50;
+        if (posY < 200) {
+            posY = -100;
             dragging = true;
         }
     }
@@ -20,14 +21,22 @@ public class Flower {
     }
 
     public void dropped() {
-        if (posY <= 900) {
-            this.posY += 50;
-            dragging = false;
+        dragging = false;
+        dropping = true;
+        if (posY < 920) {
+            this.posY += 15;
+        }
+        else {
+            dropping = false;
         }
     }
 
     public boolean getDragged() {
         return dragging;
+    }
+
+    public boolean getDropping() {
+        return dropping;
     }
 
     public int getPosX() {

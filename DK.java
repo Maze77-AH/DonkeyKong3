@@ -110,6 +110,10 @@ public class DK {
         return barrel;
     }
 
+    public boolean getIframe() {
+        return stopHarm;
+    }
+
     public boolean getDeath() {
         return marioDeath;
     }

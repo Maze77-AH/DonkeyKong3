@@ -47,13 +47,14 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
     private Barrel dkB = new Barrel();
 
     public DonkeyKong3() {
-        this(0, 0, 3, 1);
+        this(0, 0, 3, 1, false, true);
     }
 
-    public DonkeyKong3(int score, int level, int lives, int aiLevel) {
+    public DonkeyKong3(int score, int level, int lives, int aiLevel, boolean debug, boolean hasPowerUp) {
         this.lives = lives;
         this.aiLevel = aiLevel;
         this.level = level;
+        this.debug = debug;
         dk.setLevelandAI(level, aiLevel);
         myFrame = new JFrame("Donkey Kong 3");
         myFrame.setSize(windowWidth, windowHeight);
@@ -65,6 +66,10 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
         myFrame.add(this);
         myFrame.setVisible(true);
         myFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        myFrame.toFront();
+        myFrame.requestFocus();
+        ImageIcon favicon = new ImageIcon("DK3Title.png");
+        myFrame.setIconImage(favicon.getImage());
         requestFocusInWindow();
         addKeyListener(this);
         setEnemyandFlowers();
@@ -84,6 +89,7 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
             enemyVariety[x] = (int) (Math.random() * 4);
             enemy.add(new Enemy(enemyVariety[x]));
         }
+
         for (int x = 0; x < 5; x++) {
             flowers.add(new Flower());
         }
@@ -129,19 +135,30 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
                 delta--;
                 drawCount++;
             }
-            if (timer >= 1000000000) {
-                fpsCounter = drawCount;
-                if (dk.getMarioWin())
-                    marioWinSetLevel(level);
-                else if (bonusTime <= 0 || dk.getDeath() || death)
-                    death();
-                else {
+            if (aiLevel > 30) {
+                if (timer >= 1000000000 - (30 * 25000000)) {
+                    fpsCounter = drawCount;
                     dk.move(playerX, playerY);
                     bonusTime -= 100;
                     drawCount = 0;
                     timer = 0;
                 }
             }
+
+            if (aiLevel <= 30) {
+                if (timer >= 1000000000 - (aiLevel * 25000000)) {
+                    fpsCounter = drawCount;
+                    dk.move(playerX, playerY);
+                    bonusTime -= 100;
+                    drawCount = 0;
+                    timer = 0;
+                }
+            }
+
+            if (dk.getMarioWin() || enemy.size() <= 0)
+                marioWinSetLevel(level);
+            else if (bonusTime <= 0 || dk.getDeath() || death)
+                death();
 
             if (delta2 >= 1) {
                 delta2--;
@@ -163,20 +180,27 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
                 if (!death) {
                     for (int x = 0; x < enemy.size(); x++) {
                         for (int y = 0; y < flowers.size(); y++) {
-                            if (enemy.get(x).getPursue() && flowers.get(y).getPosX() >= enemy.get(x).getPosX() - 50
-                                    && flowers.get(y).getPosX() <= enemy.get(x).getPosX() + 50 && flowers.get(y).getPosY() >= enemy.get(x).getPosY() - 50
-                                    && flowers.get(y).getPosY() <= enemy.get(x).getPosY() + 50) {
+                            if (!enemy.get(x).getAttacker() && flowers.get(y).getPosX() >= enemy.get(x).getPosX() - 40
+                                    && flowers.get(y).getPosX() <= enemy.get(x).getPosX() + 40 && flowers.get(y).getPosY() >= enemy.get(x).getPosY() - 40
+                                    && flowers.get(y).getPosY() <= enemy.get(x).getPosY() + 40) {
                                         flowers.get(y).draggedAway(enemy.get(x).getPosX(), enemy.get(x).getPosY());
                             }
-                            // else if (flowers.get(y).getDragged() && enemy.get(x).getPursue() && flowers.get(y).getPosX() >= enemy.get(x).getPosX() - 50
-                            // && flowers.get(y).getPosX() <= enemy.get(x).getPosX() + 50 && flowers.get(y).getPosY() >= enemy.get(x).getPosY() - 50
-                            // && flowers.get(y).getPosY() <= enemy.get(x).getPosY() + 50) {
-                            //     flowers.get(y).dropped();
-                            // }
                             if (flowers.get(y).getPosY() <= 75) {
                                 flowers.remove(y);
                                 bonusScore -= 100;
                             }
+                        }
+                    }
+                    for (int y = 0; y < flowers.size(); y++) {
+                        if (flowers.get(y).getDragged() && bs.getPosX() >= flowers.get(y).getPosX() - 100
+                        && bs.getPosX() <= flowers.get(y).getPosX() + 100 && bs.getPosY() >= flowers.get(y).getPosY() - 100
+                        && bs.getPosY() <= flowers.get(y).getPosY() + 100) {
+                            flowers.get(y).dropped();
+                        }
+                        if (flowers.get(y).getDragged() && bs2.getPosX() >= flowers.get(y).getPosX() - 100
+                        && bs2.getPosX() <= flowers.get(y).getPosX() + 100 && bs2.getPosY() >= flowers.get(y).getPosY() - 100
+                        && bs2.getPosY() <= flowers.get(y).getPosY() + 100 || flowers.get(y).getDropping()) {
+                            flowers.get(y).dropped();
                         }
                     }
                 }
@@ -338,18 +362,18 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
         } catch (InterruptedException ex) {
             ex.printStackTrace();
         }
-        new DonkeyKong3(currentScore + bonusScore + bonusTime, level + 1, lives, aiLevel + 1);
-        System.exit(0);
-        myFrame.dispose();
         myFrame.setVisible(false);
+        myFrame.dispose();
+        new DonkeyKong3(currentScore, level + 1, lives, aiLevel + 2, debug, false);
+        System.exit(0);
     }
 
     public void setLevel(int level) {
         if (level > 1) {
-            new DonkeyKong3(currentScore, 0, lives, aiLevel);
-            System.exit(0);
-            myFrame.dispose();
             myFrame.setVisible(false);
+            myFrame.dispose();
+            new DonkeyKong3(currentScore, 0, lives, aiLevel, debug, false);
+            System.exit(0);
         }
     }
 
@@ -362,10 +386,10 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
         } catch (InterruptedException ex) {
             ex.printStackTrace();
         }
-        new DonkeyKong3(currentScore, level, lives, aiLevel);
-        System.exit(0);
-        myFrame.dispose();
         myFrame.setVisible(false);
+        myFrame.dispose();
+        new DonkeyKong3(currentScore, level, lives, aiLevel, debug, true);
+        System.exit(0);
     }
 
     public void gameOver() {
@@ -419,7 +443,10 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
         // Draw Bug Spray
         if (bs.getPosY() >= dk.getPosY() && bs.getPosY() <= dk.getPosY() + 50 && bs.getPosX() >= dk.getPosX()
                 && bs.getPosX() <= dk.getPosX() + 150) {
-            debugConsole.add(sdf.format(timestamp) + " HIT (1)");
+            if(dk.getIframe())
+                debugConsole.add(sdf.format(timestamp) + " HIT (1) !");
+            else 
+                debugConsole.add(sdf.format(timestamp) + " HIT (1)");
             bs.forceSprayOff();
             dk.hit();
         }
@@ -428,7 +455,10 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
 
         if (bs2.getPosY() >= dk.getPosY() && bs2.getPosY() <= dk.getPosY() + 50 && bs2.getPosX() >= dk.getPosX()
                 && bs2.getPosX() <= dk.getPosX() + 150) {
-            debugConsole.add(sdf.format(timestamp) + " HIT (2)");
+            if(dk.getIframe())
+                debugConsole.add(sdf.format(timestamp) + " HIT (2) !");
+            else 
+                debugConsole.add(sdf.format(timestamp) + " HIT (2)");
             bs2.forceSprayOff();
             dk.hit();
         }
@@ -464,8 +494,8 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
         }
 
         for (Enemy x : enemy) {
-            if (playerX >= x.getPosX() - 15 && playerX <= x.getPosX() + 15 && playerY >= x.getPosY() - 15
-                    && playerY <= x.getPosY() + 15 && !death)
+            if (playerX >= x.getPosX() - 30 && playerX <= x.getPosX() + 30 && playerY >= x.getPosY() - 30
+                    && playerY <= x.getPosY() + 30 && !death)
                 death = true;
         }
 
@@ -497,8 +527,10 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
 
         int count2 = 200;
         for (Flower f : flowers) {
-            f.setPosX(count2);
-            count2 += 150;
+            if (!f.getDragged()) {
+                f.setPosX(count2);
+                count2 += 150;
+            }
         }
 
         for (Flower f : flowers) {
@@ -524,6 +556,7 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
             g2.drawString(String.format("GAME.fps: (%d)", fpsCounter), 10, 60);
             g2.drawString(String.format("GAME.entities: (%d)", enemy.size() + 2), 10, 80);
             g2.drawString(String.format("MARIO.lives: (%d)", lives), 10, 100);
+            g2.drawString(String.format("DK.aiLevel: (%d)", aiLevel), 10, 120);
 
             g2.drawRect(0, 600, 350, 350);
             Color transParent = new Color(0f, 0f, 0f, .5f);

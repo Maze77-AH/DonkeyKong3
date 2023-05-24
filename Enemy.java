@@ -29,7 +29,7 @@ public class Enemy extends Mario {
 
     public void move() {
         if (!getDeath() && !attacker) {
-            if (currentAnim != variety + 1) {
+            if (currentAnim < variety + 1) {
                 currentAnim++;
             } else {
                 currentAnim = variety;
@@ -146,9 +146,9 @@ public class Enemy extends Mario {
             if (posY >= 50) {
                 posY -= 3;
                 if ((int) (Math.random() * 10) > 5) {
-                    posX += 5;
+                    posX += 10;
                 } else {
-                    posX -= 5;
+                    posX -= 10;
                 }
             } else {
                 goBack = false;
@@ -195,6 +195,10 @@ public class Enemy extends Mario {
         } else {
             return 1 + checkingSpace(index + 1, y);
         }
+    }
+
+    public boolean getAttacker() {
+        return attacker;
     }
 
     public boolean getDeath() {
