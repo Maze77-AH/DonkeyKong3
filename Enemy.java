@@ -1,6 +1,6 @@
 public class Enemy extends Mario {
 
-    // Enemy is a vital part of this game; moreso than Donkey Kong. Almost all recursion and inheritance is done in here
+    // Almost all recursion and inheritance is done in here
 
     public int variety;
     private int posX;
