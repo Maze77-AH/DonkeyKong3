@@ -185,7 +185,7 @@ public class Enemy extends Mario {
     }
 
     public void flyAttack() {
-        posX = super.getPosX();
+        posX = super.getPosX(); // aims at spawn point of Mario
         posY += 70;
     }
 

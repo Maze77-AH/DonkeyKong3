@@ -4,6 +4,9 @@ import java.awt.event.*;
 import java.util.*;
 import java.io.*;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.sql.Timestamp;
 
 public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
 
@@ -24,6 +27,8 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
     private int bonusTime = 8000;
     private int jumpCount = 0;
     private int bonusScore = 500;
+    private int fpsCounter;
+    private boolean debug = false;
     private boolean gameOver = false;
     private boolean decending = false;
     private boolean marioWin = false;
@@ -31,7 +36,9 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
     private boolean stubbed = false;
     private boolean death = false;
     private ArrayList<Enemy> enemy = new ArrayList<Enemy>(aiLevel);
+    private ArrayList<String> debugConsole = new ArrayList<String>();
     private int[] enemyVariety = new int[8];
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 
     private DK dk = new DK();
     private Mario mario = new Mario();
@@ -80,7 +87,7 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
     }
 
     public void setFPSandPaint() {
-        // Set FPS information modified from Stack Overflow
+        // Set FPS information modified extensively from Stack Overflow
 
         double drawInterval = 1000000000 / fps;
         double delta = 0;
@@ -120,7 +127,7 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
                 drawCount++;
             }
             if (timer >= 1000000000) {
-                System.out.println("FPS " + drawCount);
+                fpsCounter = drawCount;
                 if (dk.getMarioWin())
                     marioWinSetLevel(level);
                 else if (bonusTime <= 0 || dk.getDeath() || death)
@@ -369,30 +376,26 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
         Toolkit tool = Toolkit.getDefaultToolkit();
 
         // Draw Level
-
         g2.drawImage(tool.getImage("dk3_level_" + level + ".png"), 0, 0, 899, 982, this);
 
         // Draw Mario
-
         g2.drawImage(tool.getImage("bm/" + mario.getAnimMario() + ".png"), playerX, playerY, 55, 65, this);
 
         // Draw Donkey Kong
-
         g2.drawImage(tool.getImage("sprites/dk/" + dk.getAnim() + ".png"), dk.getPosX(), dk.getPosY(), dk.getSizeX(),
                 dk.getSizeY(), this);
 
         // Draw Enemy (bugs)
-
         for (Enemy x : enemy) {
             g2.drawImage(tool.getImage("sprites/bugs/" + x.getAnim() + ".png"), x.getPosX(), x.getPosY(), x.getSizeX(),
                     x.getSizeY(), this);
         }
 
         // Draw Bug Spray
-
         if (bs.getPosY() >= dk.getPosY() && bs.getPosY() <= dk.getPosY() + 50 && bs.getPosX() >= dk.getPosX()
                 && bs.getPosX() <= dk.getPosX() + 150) {
             System.out.println("HIT");
+            debugConsole.add("HIT (1)");
             bs.forceSprayOff();
             dk.hit();
         }
@@ -402,21 +405,24 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
         if (bs2.getPosY() >= dk.getPosY() && bs2.getPosY() <= dk.getPosY() + 50 && bs2.getPosX() >= dk.getPosX()
                 && bs2.getPosX() <= dk.getPosX() + 150) {
             System.out.println("HIT2");
+            debugConsole.add("HIT (2)");
             bs2.forceSprayOff();
             dk.hit();
         }
         g2.drawImage(tool.getImage("sprites/smoke/" + bs2.getAnim() + ".png"), bs2.getPosX(), bs2.getPosY(),
                 bs2.getSizeX(), bs2.getSizeY(), this);
 
-        // Score Display
-        g2.setColor(Color.orange);
-        g2.setFont(new Font("Monospace", Font.PLAIN, 40));
+        // Score Display 
+        g2.setFont(new Font("Monocraft", Font.BOLD, 40));
+        g2.setColor(Color.cyan);
         g2.drawString(Integer.toString(currentScore), 125, 30);
+        g2.setColor(Color.red);
         g2.drawString(Integer.toString(highScores), 450, 30);
         g2.drawString(Integer.toString(bonusTime), 760, 100);
+        g2.setColor(Color.white);
+        g2.setFont(new Font("Monocraft", Font.BOLD, 20));
 
-        if (marioWin)
-            g2.drawString(Integer.toString(bonusScore) + " bonus points", 350, 500);
+        if (marioWin) g2.drawString(Integer.toString(bonusScore) + " bonus points", 350, 500);
         
         if(gameOver) {
             g2.setColor(Color.black);
@@ -465,6 +471,26 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
         if (playerX >= dkB.getPosX() - 50 && playerX <= dkB.getPosX() + 50 && playerY >= dkB.getPosY() - 50 && playerY <= dkB.getPosY() + 50 && !death)
             death = true;
 
+        if (debug) {
+            int PositionConsoleY = 0;
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+           
+            g2.drawString(String.format("GAME.fps: (%d)", fpsCounter), 10, 60);
+            g2.drawString(String.format("GAME.entities: (%d)", enemy.size() + 2), 10, 80);
+            g2.drawString(String.format("MARIO.lives: (%d)", lives), 10, 100);
+
+            g2.drawRect(0, 600, 350, 350);
+
+            for (int items = 0; items < debugConsole.size(); items ++) {
+                String item = debugConsole.get(items);
+
+                if (items == 17) debugConsole.remove(0);
+                else PositionConsoleY+=20;
+
+                g2.drawString(String.format("[%s] %s", sdf.format(timestamp), item), 10, PositionConsoleY + 605);
+            }
+        }
+            
         g2.dispose();
     }
 
@@ -485,15 +511,15 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
                 mario.move();
                 left = true;
             }
-            if (event.getKeyCode() == KeyEvent.VK_W && jumpCount < 25 && !decending && !up && !down) {
+            else if (event.getKeyCode() == KeyEvent.VK_W && jumpCount < 25 && !decending && !up && !down) {
                 up = true;
                 previousYLoc = playerY;
             }
-            if (event.getKeyCode() == KeyEvent.VK_D && !(playerX > 650) && !decending && !up && !down) {
+            else if (event.getKeyCode() == KeyEvent.VK_D && !(playerX > 650) && !decending && !up && !down) {
                 mario.move();
                 right = true;
             }
-            if (event.getKeyCode() == KeyEvent.VK_S && playerY < 860 && !decending && !up && !down) {
+            else if (event.getKeyCode() == KeyEvent.VK_S && playerY < 860 && !decending && !up && !down) {
                 down = true;
                 previousYLoc = playerY;
             }
@@ -511,6 +537,7 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
             if (!bs.getSpraying())
                 bs.puff(playerX, playerY);
         }
+        if (event.getKeyCode() == KeyEvent.VK_F3) debug = !debug;
     }
 
     public void keyTyped(KeyEvent event) {
