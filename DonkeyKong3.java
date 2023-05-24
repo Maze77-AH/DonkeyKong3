@@ -292,13 +292,17 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
             ex.printStackTrace();
         }
         new DonkeyKong3(currentScore + bonusScore + bonusTime, level + 1, lives, aiLevel + 1);
-        myFrame.dispatchEvent(new WindowEvent(myFrame, WindowEvent.WINDOW_CLOSING));
+        System.exit(0);
+        myFrame.dispose();
+        myFrame.setVisible(false);
     }
 
     public void setLevel(int level) {
         if (level > 1) {
             new DonkeyKong3(currentScore, 0, lives, aiLevel);
-            myFrame.dispatchEvent(new WindowEvent(myFrame, WindowEvent.WINDOW_CLOSING));
+            System.exit(0);
+            myFrame.dispose();
+            myFrame.setVisible(false);
         }
     }
 
@@ -312,11 +316,15 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
             ex.printStackTrace();
         }
         new DonkeyKong3(currentScore, level, lives, aiLevel);
-        myFrame.dispatchEvent(new WindowEvent(myFrame, WindowEvent.WINDOW_CLOSING));
+        System.exit(0);
+        myFrame.dispose();
+        myFrame.setVisible(false);
     }
 
     public void gameOver() {
-        myFrame.dispatchEvent(new WindowEvent(myFrame, WindowEvent.WINDOW_CLOSING));
+        System.exit(0);
+        myFrame.dispose();
+        myFrame.setVisible(false);
     }
 
     public void update() {
