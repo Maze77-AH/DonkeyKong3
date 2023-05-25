@@ -192,6 +192,8 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
             }
             if (timer3 >= 40000000) {
                 if (!death) {
+                    if(left || right)
+                        mario.move();
                     if (dkB.getThrown())
                         dkB.move();
                     for (int x = 0; x < enemy.size(); x++) {
@@ -648,13 +650,11 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
     public void keyPressed(KeyEvent event) {
         if (mario.getDeath() == false) {
             if (event.getKeyCode() == KeyEvent.VK_A && !(playerX < 200) && !decending && !up && !down) {
-                mario.move();
                 left = true;
             } else if (event.getKeyCode() == KeyEvent.VK_W && jumpCount < 25 && !decending && !up && !down) {
                 up = true;
                 previousYLoc = playerY;
             } else if (event.getKeyCode() == KeyEvent.VK_D && !(playerX > 650) && !decending && !up && !down) {
-                mario.move();
                 right = true;
             } else if (event.getKeyCode() == KeyEvent.VK_S && playerY < 860 && !decending && !up && !down) {
                 down = true;

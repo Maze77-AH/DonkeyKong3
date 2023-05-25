@@ -48,7 +48,11 @@ public class DK {
                     currentAnim = 10;
                 posX = posXMario - 100;
                 posY = posYMario;
-            } else {
+            } else if (posY >= 349 && posY <= 340) {
+                currentAnim = 14;
+            }
+            
+            else {
                 posY += aiLevel;
                 if (currentAnim < 7)
                     currentAnim++;
