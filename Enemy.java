@@ -7,7 +7,7 @@ public class Enemy extends Mario {
     private int posY;
     private int sizeX = 15;
     private int sizeY = 15;
-    private int currSpeed = 1;
+    private int currSpeed = 10;
     private int currentAnim = variety;
     private boolean goBack = false;
     private boolean pursue = false;

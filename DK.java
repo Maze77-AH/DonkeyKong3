@@ -29,18 +29,22 @@ public class DK {
     }
 
     public void move(int posXMario, int posYMario) {
-        if (stopHarm && globalCount < 3 && level == 0 && aiLevel < aiThreshold)
-            whackBugs();
-        if (stopHarm && globalCount < 3 && level == 0 && aiLevel >= aiThreshold)
-            throwBarrel();
-        if (stopHarm && globalCount < 3 && level == 1)
-            throwBarrel();
+        if (!(posY >= 340 && posY < 350)) {
+            if (stopHarm && globalCount < 3 && level == 0 && aiLevel < aiThreshold)
+                whackBugs();
+            if (stopHarm && globalCount < 3 && level == 0 && aiLevel >= aiThreshold)
+                throwBarrel();
+            if (stopHarm && globalCount < 3 && level == 1)
+                throwBarrel();
+        }
         if (!stopHarm) {
             globalCount = 0;
             if (posY <= 50 && level == 0 || posY <= 110 && level == 1) {
                 marioWin = true;
                 currentAnim = 5;
-            } else if (posY >= 350) {
+                sizeY = 150;
+            }
+            else if (posY >= 350) {
                 marioDeath = true;
                 if (currentAnim == 10)
                     currentAnim = 9;
@@ -48,24 +52,29 @@ public class DK {
                     currentAnim = 10;
                 posX = posXMario - 100;
                 posY = posYMario;
-            } else if (posY >= 349 && posY <= 340) {
-                currentAnim = 14;
+                sizeY = 150;
             }
-            
+            else if (posY >= 340 && posY < 350) {
+                currentAnim = 14;
+                sizeY = 200;
+            }
             else {
+                sizeY = 150;
                 posY += aiLevel;
                 if (currentAnim < 7)
                     currentAnim++;
                 else
                     currentAnim = 6;
             }
-            if ((int)(Math.random() * 5) == 2) {
-                if (level == 0 && aiLevel < aiThreshold)
-                    whackBugs();
-                if (level == 0 && aiLevel >= aiThreshold)
-                    throwBarrel();
-                if (level == 1)
-                    throwBarrel();
+            if (!(posY >= 340 && posY < 350)) {
+                if ((int)(Math.random() * 5) == 2) {
+                    if (level == 0 && aiLevel < aiThreshold)
+                        whackBugs();
+                    if (level == 0 && aiLevel >= aiThreshold)
+                        throwBarrel();
+                    if (level == 1)
+                        throwBarrel();
+                }
             }
         }
     }
@@ -88,6 +97,7 @@ public class DK {
 
     public void whackBugs() {
         if (!marioWin) {
+            sizeY = 150;
             if (globalCount == 0) {
                 stopHarm = true;
                 currentAnim = 2;
@@ -106,6 +116,7 @@ public class DK {
 
     public void throwBarrel() {
         if (!marioWin) {
+            sizeY = 150;
             if (globalCount == 0) {
                 stopHarm = true;
                 currentAnim = 7;
@@ -127,6 +138,7 @@ public class DK {
 
     public void hit() {
         if (!stopHarm || !marioWin && !stopHarm) {
+            sizeY = 150;
             currentAnim = 5;
             posY -= 10;
         }
