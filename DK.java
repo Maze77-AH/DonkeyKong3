@@ -14,6 +14,8 @@ public class DK extends Mario {
     private boolean marioDeath = false;
     private boolean marioWin = false;
     private boolean barrel = false;
+    private int[] selectPositionX = {6, 2, -2, 8, -8, 9};
+    private int[] selectPositionY = {1, 1, 1, 1, 1, -1};
 
     public void setLevelandAI(int level, int aiLevel) {
         this.level = level;
@@ -81,14 +83,14 @@ public class DK extends Mario {
     }
 
     public int randomX() {
-        return (int)(Math.random() * 10) * 2;
+        return selectPositionX[(int)(Math.random() * selectPositionX.length)];
     }
 
     public int donkeyThrow(int currValue) {
         if(currValue >= 70) {
             return 0;
         }else {
-            return (int)(Math.random() * 4) + donkeyThrow(currValue + 1);
+            return selectPositionY[(int)(Math.random() * selectPositionY.length)] + donkeyThrow(currValue + 1);
         }
     }
 
