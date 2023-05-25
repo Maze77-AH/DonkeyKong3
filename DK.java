@@ -1,4 +1,4 @@
-public class DK {
+public class DK extends Mario {
     // Contains recursion
 
     private int posX;
@@ -55,6 +55,7 @@ public class DK {
                 sizeY = 150;
             }
             else if (posY >= 340 && posY < 350) {
+                posY += aiLevel;
                 currentAnim = 14;
                 sizeY = 200;
             }
@@ -79,16 +80,20 @@ public class DK {
         }
     }
 
-    public int recycle(int currValue) {
-        if(currValue >= 70) {
-            return 70;
-        }else {
-            return (int)(Math.random() * 10) * 18;
-        }
+    public int randomX() {
+        return (int)(Math.random() * 10) * 2;
     }
 
     public int donkeyThrow(int currValue) {
-        return (int)(Math.random() * 10) * 5 + recycle(currValue);
+        if(currValue >= 70) {
+            return 0;
+        }else {
+            return (int)(Math.random() * 4) + donkeyThrow(currValue + 1);
+        }
+    }
+
+    public int getMarioPosX() {
+        return super.getPosX();
     }
 
     public void forceThrow() {

@@ -7,7 +7,6 @@ public class Enemy extends Mario {
     private int posY;
     private int sizeX = 15;
     private int sizeY = 15;
-    private int currSpeed = 10;
     private int currentAnim = variety;
     private boolean goBack = false;
     private boolean pursue = false;
@@ -147,9 +146,9 @@ public class Enemy extends Mario {
             if (posY >= 50) {
                 posY -= 3;
                 if ((int) (Math.random() * 10) > 5) {
-                    posX += currSpeed;
+                    posX += speedIncrease(0);
                 } else {
-                    posX -= currSpeed;
+                    posX -= speedIncrease(0);
                 }
             } else {
                 goBack = false;
@@ -190,12 +189,11 @@ public class Enemy extends Mario {
         posY += 70;
     }
 
-    public void speedIncrease(int speed) {
-        if (speed >= 15) {
-            currSpeed = 15;
-        } else {
-            currSpeed += 1;
-        }
+    public int speedIncrease(int speed) {
+        if (speed >= 15)
+            return 0;
+        else
+            return 1 + speedIncrease(speed + 1);
     }
 
     public int checkingSpace(int index, int y) {

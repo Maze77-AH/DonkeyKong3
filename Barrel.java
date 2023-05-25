@@ -6,6 +6,7 @@ public class Barrel extends DK {
     private int velocity = 70;
     private int sizeX = 50;
     private int sizeY = 50;
+    private int ranX = super.randomX();
     private boolean thrown = false;;
 
     public Barrel() {
@@ -13,7 +14,7 @@ public class Barrel extends DK {
     }
 
     public void setVelocity() {
-        velocity = super.donkeyThrow(0);
+        velocity = donkeyThrow(0);
     }
 
     public void reset(int posY) {
@@ -23,6 +24,7 @@ public class Barrel extends DK {
     public void move() {
         setVelocity();
         this.posY += velocity;
+        this.posX += ranX;
         if (posY >= 4000)
             thrown = false;
     }
