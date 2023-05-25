@@ -10,7 +10,7 @@ public class Flower {
         this.posX = posX;
         this.posY = posY;
         dragging = true;
-        if (posY < 200) {
+        if (posY < 250) {
             posY = -100;
             dragging = true;
         }

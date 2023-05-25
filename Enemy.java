@@ -1,12 +1,13 @@
 public class Enemy extends Mario {
 
-    // Almost all recursion and inheritance is done in here
-
+    // Contains recursion and inheritance
+    
     public int variety;
     private int posX;
     private int posY;
     private int sizeX = 15;
     private int sizeY = 15;
+    private int currSpeed = 1;
     private int currentAnim = variety;
     private boolean goBack = false;
     private boolean pursue = false;
@@ -146,9 +147,9 @@ public class Enemy extends Mario {
             if (posY >= 50) {
                 posY -= 3;
                 if ((int) (Math.random() * 10) > 5) {
-                    posX += 10;
+                    posX += currSpeed;
                 } else {
-                    posX -= 10;
+                    posX -= currSpeed;
                 }
             } else {
                 goBack = false;
@@ -187,6 +188,14 @@ public class Enemy extends Mario {
     public void flyAttack() {
         posX = super.getPosX(); // aims at spawn point of Mario
         posY += 70;
+    }
+
+    public void speedIncrease(int speed) {
+        if (speed >= 15) {
+            currSpeed = 15;
+        } else {
+            currSpeed += 1;
+        }
     }
 
     public int checkingSpace(int index, int y) {

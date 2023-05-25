@@ -8,10 +8,13 @@ public class BugSpray extends Mario {
     private int sizeY = 25;
     private int currentAnim = 0;
 
-    public BugSpray(boolean extreme) {
+    public BugSpray() {
         super();
-        this.extreme = extreme;
         currentAnim = 0;
+    }
+
+    public void setExtreme(boolean extreme) {
+        this.extreme = extreme;
     }
 
     public void puff(int posXMario, int posYMario) {
@@ -32,10 +35,12 @@ public class BugSpray extends Mario {
                 currentAnim = 0;
             }
         } else {
-            if (currentAnim < 17) {
+            if (currentAnim < 17 && currentAnim > 10) {
                 currentAnim++;
-            } else {
-                currentAnim = 18;
+            } else if (currentAnim < 10) {
+                currentAnim = 11;
+            }
+            else {
                 spraying = false;
                 currentAnim = 0;
             }

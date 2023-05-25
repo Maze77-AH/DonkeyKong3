@@ -1,4 +1,5 @@
 public class DK {
+    // Contains recursion
 
     private int posX;
     private int posY;
@@ -8,6 +9,7 @@ public class DK {
     private int level;
     private int aiLevel;
     private int globalCount = 0;
+    private int aiThreshold = 8;
     private boolean stopHarm = false;
     private boolean marioDeath = false;
     private boolean marioWin = false;
@@ -27,8 +29,10 @@ public class DK {
     }
 
     public void move(int posXMario, int posYMario) {
-        if (stopHarm && globalCount < 3 && level == 0)
+        if (stopHarm && globalCount < 3 && level == 0 && aiLevel < aiThreshold)
             whackBugs();
+        if (stopHarm && globalCount < 3 && level == 0 && aiLevel >= aiThreshold)
+            throwBarrel();
         if (stopHarm && globalCount < 3 && level == 1)
             throwBarrel();
         if (!stopHarm) {
@@ -52,12 +56,30 @@ public class DK {
                     currentAnim = 6;
             }
             if ((int)(Math.random() * 5) == 2) {
-                if (level == 0)
+                if (level == 0 && aiLevel < aiThreshold)
                     whackBugs();
-                else
+                if (level == 0 && aiLevel >= aiThreshold)
+                    throwBarrel();
+                if (level == 1)
                     throwBarrel();
             }
         }
+    }
+
+    public int recycle(int currValue) {
+        if(currValue >= 70) {
+            return 70;
+        }else {
+            return (int)(Math.random() * 10) * 18;
+        }
+    }
+
+    public int donkeyThrow(int currValue) {
+        return (int)(Math.random() * 10) * 5 + recycle(currValue);
+    }
+
+    public void forceThrow() {
+        throwBarrel();
     }
 
     public void whackBugs() {
@@ -106,12 +128,24 @@ public class DK {
         }
     }
 
+    public int getThreshold() {
+        return aiThreshold;
+    }
+
+    public void setMarioWin() {
+        marioWin = true;
+    }
+
     public boolean getBarrel() {
         return barrel;
     }
 
     public boolean getIframe() {
         return stopHarm;
+    }
+
+    public int getAILevel() {
+        return aiLevel;
     }
 
     public boolean getDeath() {

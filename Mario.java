@@ -3,7 +3,8 @@ public class Mario {
   private int posY = 1000;
   private int perPixel = 4;
   private int currentAnim = 0;
-  private boolean death = false;;
+  private boolean death = false;
+  private boolean extreme;
 
   public Mario() {
   }
@@ -32,6 +33,10 @@ public class Mario {
       currentAnim = 5;
     }
     System.out.println("WIN");
+  }
+
+  public void setExtreme(boolean extreme) {
+    this.extreme = extreme;
   }
 
   public void updatePosX(int posX) {
