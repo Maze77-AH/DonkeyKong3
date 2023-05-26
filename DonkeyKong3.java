@@ -537,6 +537,8 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
         g2.drawString(Integer.toString(currentScore), 125, 30);
         g2.setColor(Color.red);
         g2.drawString(Integer.toString(highScores), 450, 30);
+        if (level == 1)
+            g2.setColor(Color.orange);
         g2.drawString(Integer.toString(bonusTime), 760, 100);
         g2.setColor(Color.white);
         g2.setFont(new Font("Monocraft", Font.BOLD, 20));
