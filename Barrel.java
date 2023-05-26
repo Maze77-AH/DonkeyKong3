@@ -1,5 +1,5 @@
 public class Barrel extends DK {
-    // Contains inheritance
+    // Contains inheritance from a recursion method
 
     private int posX;
     private int posY;
@@ -15,7 +15,7 @@ public class Barrel extends DK {
 
     public void setVelocity() {
         ranX = super.randomX();
-        velocity = super.donkeyThrow(0);
+        velocity = super.donkeyThrow(ranX);
     }
 
     public void reset(int posY) {

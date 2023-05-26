@@ -54,4 +54,8 @@ public class Flower {
     public int getSizeY() {
         return sizeY;
     }
+
+    public String toString() {
+        return "Flower";
+    }
 }

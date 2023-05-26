@@ -57,13 +57,13 @@ public class DK extends Mario {
                 sizeY = 150;
             }
             else if (posY >= 340 && posY < 350) {
-                posY += aiLevel;
+                posY += 5;
                 currentAnim = 14;
                 sizeY = 200;
             }
             else {
                 sizeY = 150;
-                posY += aiLevel;
+                posY += 5;
                 if (currentAnim < 7)
                     currentAnim++;
                 else
@@ -126,13 +126,13 @@ public class DK extends Mario {
             sizeY = 150;
             if (globalCount == 0) {
                 stopHarm = true;
-                currentAnim = 7;
-                barrel = false;
-            }
-            if (globalCount == 1) {
-                stopHarm = true;
                 currentAnim = 12;
                 barrel = true;
+            }
+            if (globalCount == 1) {
+                stopHarm = false;
+                currentAnim = 6;
+                barrel = false;
             }
             if (globalCount == 2) {
                 stopHarm = false;

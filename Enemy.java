@@ -184,6 +184,12 @@ public class Enemy extends Mario {
         }
     }
 
+    public void forcePursue() {
+        pursue = true;
+        sizeX = 50;
+        sizeY = 50;
+    }
+
     public void flyAttack() {
         posX = super.getPosX(); // aims at spawn point of Mario
         posY += 70;

@@ -203,7 +203,8 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
                                     && flowers.get(y).getPosY() <= enemy.get(x).getPosY() + 40) {
                                         flowers.get(y).draggedAway(enemy.get(x).getPosX(), enemy.get(x).getPosY());
                             }
-                            if (flowers.get(y).getPosY() <= 75) {
+                            if (flowers.get(y).getPosY() <= 150) {
+                                debugConsole.add("Flower Lost: " + flowers.get(y));
                                 flowers.remove(y);
                                 bonusScore -= 100;
                             }
@@ -489,7 +490,7 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
         if (bs.getPosY() >= dk.getPosY() && bs.getPosY() <= dk.getPosY() + 50 && bs.getPosX() >= dk.getPosX()
                 && bs.getPosX() <= dk.getPosX() + 150) {
             if(dk.getIframe())
-                debugConsole.add(sdf.format(timestamp) + " HIT (1) !");
+                debugConsole.add(sdf.format(timestamp) + " HIT (1): Inv");
             else 
                 debugConsole.add(sdf.format(timestamp) + " HIT (1)");
             bs.forceSprayOff();
@@ -501,7 +502,7 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
         if (bs2.getPosY() >= dk.getPosY() && bs2.getPosY() <= dk.getPosY() + 50 && bs2.getPosX() >= dk.getPosX()
                 && bs2.getPosX() <= dk.getPosX() + 150) {
             if(dk.getIframe())
-                debugConsole.add(sdf.format(timestamp) + " HIT (2) !");
+                debugConsole.add(sdf.format(timestamp) + " HIT (2): Inv");
             else 
                 debugConsole.add(sdf.format(timestamp) + " HIT (2)");
             bs2.forceSprayOff();
@@ -676,12 +677,16 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
         }
         if (event.getKeyCode() == KeyEvent.VK_L && debug)
             dk.setMarioWin();
-        if (event.getKeyCode() == KeyEvent.VK_K && debug)
+        if (event.getKeyCode() == KeyEvent.VK_K && debug) {
             dk.setLevelandAI(level, 30);
+            aiLevel = 30;
+        }
         if (event.getKeyCode() == KeyEvent.VK_DOWN && debug)
             dk.move(playerX, playerY);
         if (event.getKeyCode() == KeyEvent.VK_RIGHT && debug)
             dk.forceThrow();
+        if (event.getKeyCode() == KeyEvent.VK_LEFT && debug)
+            enemy.get((int)Math.random() * enemy.size()).forcePursue();
         if (event.getKeyCode() == KeyEvent.VK_F3)
             debug = !debug;
     }
