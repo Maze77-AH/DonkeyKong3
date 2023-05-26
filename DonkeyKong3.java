@@ -115,6 +115,7 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
 
         for (int x = 0; x < 5; x++) {
             flowers.add(new Flower());
+            dk.flowers(flowers);
         }
     }
 

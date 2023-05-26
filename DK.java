@@ -1,3 +1,5 @@
+import java.util.*;
+
 public class DK extends Mario {
     // Contains recursion and inheritance
 
@@ -14,8 +16,13 @@ public class DK extends Mario {
     private boolean marioDeath = false;
     private boolean marioWin = false;
     private boolean barrel = false;
+    private ArrayList<Flower> flowers = new ArrayList<Flower>();
     private int[] selectPositionX = {6, 2, -2, 8, -8, 9};
     private int[] selectPositionY = {1, 1, 1, 1, 1, -1};
+
+    public DK() {
+        super();
+    }
 
     public void setLevelandAI(int level, int aiLevel) {
         this.level = level;
@@ -30,7 +37,15 @@ public class DK extends Mario {
         }
     }
 
+    public void flowers(ArrayList<Flower> flowers) {
+        this.flowers = flowers;
+    }
+
     public void move(int posXMario, int posYMario) {
+        if (flowers.size() <= 0) {
+            marioDeath = true;
+            super.setDeath();
+        }
         if (!(posY >= 340 && posY < 350)) {
             if (stopHarm && globalCount < 3 && level == 0 && aiLevel < aiThreshold)
                 whackBugs();
