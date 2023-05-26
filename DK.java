@@ -1,5 +1,5 @@
 public class DK extends Mario {
-    // Contains recursion
+    // Contains recursion and inheritance
 
     private int posX;
     private int posY;
@@ -86,12 +86,13 @@ public class DK extends Mario {
         return selectPositionX[(int)(Math.random() * selectPositionX.length)];
     }
 
-    public int donkeyThrow(int currValue) {
-        if(currValue >= 70) {
+    public int donkeyThrow(int currValue, boolean easy) {
+        if(currValue > 70 && !easy)
             return 0;
-        }else {
-            return selectPositionY[(int)(Math.random() * selectPositionY.length)] + donkeyThrow(currValue + 1);
-        }
+        else if (currValue == 50 && easy)
+            return currValue;
+        else
+            return selectPositionY[(int)(Math.random() * selectPositionY.length)] + donkeyThrow(currValue + 1, easy);
     }
 
     public int getMarioPosX() {

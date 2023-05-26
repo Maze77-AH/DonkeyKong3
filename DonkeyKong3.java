@@ -37,6 +37,7 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
     private boolean extreme = false;
     private boolean hasPowerUp = false;
     private boolean dropped = false;
+    private boolean stopSpawn = false;
     private int countExtreme = 0;
     private ArrayList<Enemy> enemy = new ArrayList<Enemy>(aiLevel);
     private ArrayList<Flower> flowers = new ArrayList<Flower>();
@@ -78,7 +79,7 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
         myFrame.setIconImage(favicon.getImage());
         requestFocusInWindow();
         addKeyListener(this);
-        setEnemyandFlowers();
+        setEnemyandFlowers(enemyVariety);
         try {
             setHighScore();
         } catch (IOException e) {
@@ -87,6 +88,7 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
         scoreIncrease(score);
         setLevel(level);
         setPump();
+        setAILevelBarrel();
         if (activePowerUp) {
             onExtreme();
         }
@@ -94,14 +96,21 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
 
     }
 
+    public void setAILevelBarrel() {
+        dkB.setAI(aiLevel);
+    }
+
     public void setPump() {
         pump.setPump(hasPowerUp);
     }
 
-    public void setEnemyandFlowers() {
-        for (int x = 0; x < enemyVariety.length; x++) {
-            enemyVariety[x] = (int) (Math.random() * 4);
-            enemy.add(new Enemy(enemyVariety[x]));
+    public void setEnemyandFlowers(int [] array) {
+        for (int x = 0; x < array.length; x++) {
+            array[x] = (int) (Math.random() * 4);
+            if (array[0] == 0) {
+                array[0] = 1;
+            }
+            enemy.add(new Enemy(array[x]));
         }
 
         for (int x = 0; x < 5; x++) {
@@ -435,6 +444,10 @@ public class DonkeyKong3 extends JPanel implements ActionListener, KeyListener {
 
     public void update() {
         if (mario.getDeath() == false) {
+            if (enemy.size() == 1 && !stopSpawn) {
+                stopSpawn = false;
+                setEnemyandFlowers(enemyVariety);
+            }
             mario.updatePosX(playerX);
             mario.updatePosY(playerY);
             if (left && !(playerX < 200)) {
