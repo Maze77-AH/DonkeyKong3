@@ -1,2 +1,2 @@
 # Donkey Kong 3
-Donkey Kong written in Java
+Donkey Kong 3 written in Java
